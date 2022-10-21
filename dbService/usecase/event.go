@@ -50,6 +50,6 @@ func (e *EventService) GetPaymentByUserID(ctx context.Context, id *IDPayload) (*
 	return nil, nil
 }
 
-func (e *EventService) CreatePayment(ctx context.Context, payment *Payment) (*Empty, error) {
+func (e *EventService) CreatePayment(ctx context.Context, payload *Payment) (*Empty, error) {
 	return nil, nil
 }

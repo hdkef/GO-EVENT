@@ -26,6 +26,7 @@ func main() {
 	grpcServer := grpc.NewServer()
 
 	usecase.RegisterEventLayerServer(grpcServer, &usecase.EventService{})
+	usecase.RegisterUserLayerServer(grpcServer, &usecase.UserService{})
 
 	if err := grpcServer.Serve(listen); err != nil {
 		log.Fatalln("error grpc", err.Error())
