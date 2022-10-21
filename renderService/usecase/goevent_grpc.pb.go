@@ -29,7 +29,7 @@ type EventLayerClient interface {
 	GetRegisterByUserID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Register, error)
 	CreateSubscription(ctx context.Context, in *Subscription, opts ...grpc.CallOption) (*Empty, error)
 	GetAllSubscription(ctx context.Context, in *Pagination, opts ...grpc.CallOption) (*SubscriptionList, error)
-	GetPaymentByUserID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Payment, error)
+	GetPaymentByUserID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*PaymentList, error)
 	CreatePayment(ctx context.Context, in *Payment, opts ...grpc.CallOption) (*Empty, error)
 }
 
@@ -104,8 +104,8 @@ func (c *eventLayerClient) GetAllSubscription(ctx context.Context, in *Paginatio
 	return out, nil
 }
 
-func (c *eventLayerClient) GetPaymentByUserID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Payment, error) {
-	out := new(Payment)
+func (c *eventLayerClient) GetPaymentByUserID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*PaymentList, error) {
+	out := new(PaymentList)
 	err := c.cc.Invoke(ctx, "/usecase.EventLayer/GetPaymentByUserID", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -133,7 +133,7 @@ type EventLayerServer interface {
 	GetRegisterByUserID(context.Context, *IDPayload) (*Register, error)
 	CreateSubscription(context.Context, *Subscription) (*Empty, error)
 	GetAllSubscription(context.Context, *Pagination) (*SubscriptionList, error)
-	GetPaymentByUserID(context.Context, *IDPayload) (*Payment, error)
+	GetPaymentByUserID(context.Context, *IDPayload) (*PaymentList, error)
 	CreatePayment(context.Context, *Payment) (*Empty, error)
 	mustEmbedUnimplementedEventLayerServer()
 }
@@ -163,7 +163,7 @@ func (UnimplementedEventLayerServer) CreateSubscription(context.Context, *Subscr
 func (UnimplementedEventLayerServer) GetAllSubscription(context.Context, *Pagination) (*SubscriptionList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAllSubscription not implemented")
 }
-func (UnimplementedEventLayerServer) GetPaymentByUserID(context.Context, *IDPayload) (*Payment, error) {
+func (UnimplementedEventLayerServer) GetPaymentByUserID(context.Context, *IDPayload) (*PaymentList, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPaymentByUserID not implemented")
 }
 func (UnimplementedEventLayerServer) CreatePayment(context.Context, *Payment) (*Empty, error) {
