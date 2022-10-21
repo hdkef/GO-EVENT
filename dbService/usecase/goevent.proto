@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+option go_package = "renderService/usecase";
+
+package usecase;
+
+//EVENT
+service EventLayer {
+    rpc GetAllParticipant(Pagination) returns (ParticipantList);
+    
+    rpc GetAllEvent(Pagination) returns (EventList);
+    rpc GetEventByID(IDPayload) returns (Event);
+    
+    rpc RegisterEvent(Register) returns (Empty);
+    rpc GetRegisterByUserID(IDPayload) returns (Register);
+    
+    rpc CreateSubscription(Subscription) returns (Empty);
+    rpc GetAllSubscription(Pagination) returns (SubscriptionList);
+    
+    rpc GetPaymentByUserID(IDPayload) returns (Payment);
+    rpc CreatePayment(Payment) returns (Empty);
+}
+
+message IDPayload{
+    uint32 ID = 1;
+}
+
+message Empty{
+
+}
+
+message Pagination{
+    uint32 lastID = 1;
+    uint32 limit = 2;
+    string query = 3;
+}
+
+message Event{
+    optional uint32 ID = 1;
+    optional string name = 2;
+    optional string desc = 3;
+    optional string event_img = 4;
+    optional string password = 5;
+    optional string requirement = 6;
+    optional bool need_payment = 7;
+    optional bool need_ID = 8;
+    optional uint32 payment_ID = 9;
+    optional uint32 creator_ID = 10;
+}
+
+message EventList{
+    repeated Event list = 1;
+}
+
+message Participant{
+    uint32 ID = 1;
+    string name = 2;
+    string desc = 3;
+    string profile_img = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    string email = 7;
+    optional uint32 register_ID = 8;
+}
+
+message ParticipantList{
+    repeated Participant list = 1;
+}
+
+message Register{
+    uint32 ID = 1;
+    string requirement = 2;
+    optional string payment_img = 3;
+    optional string ID_img = 4; 
+}
+
+message Subscription{
+    uint32 ID = 1;
+    uint32 publisher_ID = 2;
+    uint32 consumer_ID = 3;
+}
+
+message SubscriptionList{
+    repeated Subscription list = 1;
+}
+
+message Payment{
+    uint32 ID = 1;
+    string name = 2;
+    string detail = 3;
+}
+
+
+//USER
+service UserLayer {
+    rpc Login(LoginPayload) returns (Token);
+    rpc GetUserByID(IDPayload) returns (User);
+    rpc Register(User) returns (Empty);
+}
+
+message Token{
+    string token = 1;
+}
+
+message LoginPayload{
+    uint32 email = 1;
+    string password = 2;
+}
+
+message LoginResponse{
+
+}
+
+message User{
+    optional uint32 ID = 1;
+    string name = 2;
+    string desc = 3;
+    optional string profile_img = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    string email = 7;
+    string password = 8;
+}
+
+message UserList{
+    repeated User list = 1;
+}
