@@ -17,7 +17,7 @@ service EventLayer {
     rpc CreateSubscription(Subscription) returns (Empty);
     rpc GetAllSubscription(Pagination) returns (SubscriptionList);
     
-    rpc GetPaymentByUserID(IDPayload) returns (Payment);
+    rpc GetPaymentByUserID(IDPayload) returns (PaymentList);
     rpc CreatePayment(Payment) returns (Empty);
 }
 
@@ -89,6 +89,11 @@ message Payment{
     string name = 2;
     string detail = 3;
 }
+
+message PaymentList{
+    repeated Payment list = 1;
+}
+
 
 
 //USER
