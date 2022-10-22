@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func SignUp(c *gin.Context) {
@@ -20,6 +21,25 @@ func SignUp(c *gin.Context) {
 
 		return
 	}
+
+	//validate user
+	err = utils.ValidateUser(&user)
+	if err != nil {
+		//render error page
+
+		return
+	}
+
+	//hashingPassword
+	hashedPass, err := bcrypt.GenerateFromPassword([]byte(user.Password), 5)
+	if err != nil {
+		//render error page
+
+		return
+	}
+
+	//set pass to hashedPassword
+	user.Password = string(hashedPass)
 
 	//get grpc client
 	grpc := utils.GetGRPCClient(c)
