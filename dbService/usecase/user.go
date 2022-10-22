@@ -4,11 +4,13 @@ import (
 	"context"
 	"dbservice/layer"
 	"dbservice/repository"
-	"dbservice/utils"
+
+	"gorm.io/gorm"
 )
 
 type UserService struct {
 	*layer.UnimplementedUserLayerServer
+	DB *gorm.DB
 }
 
 func (e *UserService) SignIn(ctx context.Context, payload *layer.LoginPayload) (*layer.Token, error) {
@@ -20,19 +22,14 @@ func (e *UserService) GetUserID(ctx context.Context, id *layer.IDPayload) (*laye
 }
 
 func (e *UserService) Create(ctx context.Context, payload *layer.User) (*layer.Empty, error) {
-	//validate payload
-	err := utils.ValidateUser(payload)
-	if err != nil {
-		return &layer.Empty{}, err
-	}
-
 	//create user repo
 	repo := repository.User{
+		DB:   e.DB,
 		User: payload,
 	}
 
 	//save
-	err = repo.CreateUser(ctx)
+	err := repo.CreateUser(ctx)
 	if err != nil {
 		return &layer.Empty{}, err
 	}

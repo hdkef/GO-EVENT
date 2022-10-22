@@ -3,10 +3,13 @@ package usecase
 import (
 	context "context"
 	"dbservice/layer"
+
+	"gorm.io/gorm"
 )
 
 type SubscriptionService struct {
 	*layer.UnimplementedSubscriptionLayerServer
+	DB *gorm.DB
 }
 
 func (e *SubscriptionService) Get(ctx context.Context, pagination *layer.Pagination) (*layer.SubscriptionList, error) {

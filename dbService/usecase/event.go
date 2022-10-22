@@ -3,10 +3,13 @@ package usecase
 import (
 	context "context"
 	"dbservice/layer"
+
+	"gorm.io/gorm"
 )
 
 type EventService struct {
 	*layer.UnimplementedEventLayerServer
+	DB *gorm.DB
 }
 
 func (e *EventService) Get(ctx context.Context, pagination *layer.Pagination) (*layer.EventList, error) {

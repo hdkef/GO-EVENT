@@ -3,10 +3,13 @@ package usecase
 import (
 	context "context"
 	"dbservice/layer"
+
+	"gorm.io/gorm"
 )
 
 type PaymentService struct {
 	*layer.UnimplementedPaymentLayerServer
+	DB *gorm.DB
 }
 
 func (e *PaymentService) GetByUserID(ctx context.Context, id *layer.IDPayload) (*layer.PaymentList, error) {

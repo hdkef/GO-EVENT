@@ -3,10 +3,13 @@ package usecase
 import (
 	context "context"
 	"dbservice/layer"
+
+	"gorm.io/gorm"
 )
 
 type RegisterService struct {
 	*layer.UnimplementedRegisterLayerServer
+	DB *gorm.DB
 }
 
 func (e *RegisterService) Create(ctx context.Context, payload *layer.Register) (*layer.Empty, error) {

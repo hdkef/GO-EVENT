@@ -3,10 +3,13 @@ package usecase
 import (
 	context "context"
 	"dbservice/layer"
+
+	"gorm.io/gorm"
 )
 
 type LikeService struct {
 	*layer.UnimplementedLikeLayerServer
+	DB *gorm.DB
 }
 
 func (e *LikeService) Get(ctx context.Context, pagination *layer.Pagination) (*layer.LikeList, error) {

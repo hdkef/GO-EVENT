@@ -3,10 +3,13 @@ package usecase
 import (
 	context "context"
 	"dbservice/layer"
+
+	"gorm.io/gorm"
 )
 
 type ParticipantService struct {
 	*layer.UnimplementedParticipantLayerServer
+	DB *gorm.DB
 }
 
 func (e *ParticipantService) Get(ctx context.Context, pagination *layer.Pagination) (*layer.ParticipantList, error) {
