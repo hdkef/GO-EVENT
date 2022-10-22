@@ -1,55 +1,52 @@
 package usecase
 
-import "context"
+import (
+	context "context"
+	"dbservice/layer"
+)
 
 type EventService struct {
-	*UnimplementedEventLayerServer
+	*layer.UnimplementedEventLayerServer
 }
 
-// GetAllEvent will get all event with pagination (lastID, limit, and query)
-func (e *EventService) GetAllEvent(ctx context.Context, pagination *Pagination) (*EventList, error) {
-	ID := uint32(1)
-	Name := "Marathon"
-	Desc := "Pocari Sweat Marathon 42 km in Bandung"
-	NeedPayment := false
-	Need_ID := false
-	Payment_ID := uint32(1)
-	Creator_ID := uint32(1)
-	example := Event{ID: &ID, Name: &Name, Desc: &Desc, NeedPayment: &NeedPayment, Need_ID: &Need_ID, Payment_ID: &Payment_ID, Creator_ID: &Creator_ID}
+func (e *EventService) Get(ctx context.Context, pagination *layer.Pagination) (*layer.EventList, error) {
+	nama := "marathon"
+	desc := "event tahunan marathon di bandung"
+	needPayment := false
+	needID := false
+	isOffline := true
+	presenceQ := "{`q`:[]}"
+	status := layer.EventStatus_E_OPEN_FOR_REG
 
-	return &EventList{
-		List: []*Event{&example, &example, &example},
+	list := []*layer.Event{
+		{
+			Name:             nama,
+			Desc:             desc,
+			NeedPayment:      needPayment,
+			Need_ID:          needID,
+			IsOffline:        isOffline,
+			PresenceQuestion: presenceQ,
+			Status:           status,
+		},
+	}
+
+	return &layer.EventList{
+		List: list,
 	}, nil
 }
 
-func (e *EventService) GetAllParticipant(ctx context.Context, pagination *Pagination) (*ParticipantList, error) {
+func (e *EventService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer.Event, error) {
 	return nil, nil
 }
 
-func (e *EventService) GetEventByID(ctx context.Context, id *IDPayload) (*Event, error) {
+func (e *EventService) Create(ctx context.Context, payload *layer.Event) (*layer.Empty, error) {
 	return nil, nil
 }
 
-func (e *EventService) RegisterEvent(ctx context.Context, payload *Register) (*Empty, error) {
+func (e *EventService) Delete(ctx context.Context, id *layer.IDPayload) (*layer.Empty, error) {
 	return nil, nil
 }
 
-func (e *EventService) GetRegisterByUserID(ctx context.Context, id *IDPayload) (*Register, error) {
-	return nil, nil
-}
-
-func (e *EventService) CreateSubscription(ctx context.Context, payload *Subscription) (*Empty, error) {
-	return nil, nil
-}
-
-func (e *EventService) GetAllSubscription(ctx context.Context, pagination *Pagination) (*SubscriptionList, error) {
-	return nil, nil
-}
-
-func (e *EventService) GetPaymentByUserID(ctx context.Context, id *IDPayload) (*PaymentList, error) {
-	return nil, nil
-}
-
-func (e *EventService) CreatePayment(ctx context.Context, payload *Payment) (*Empty, error) {
+func (e *EventService) Edit(ctx context.Context, payload *layer.EventEditPayload) (*layer.Empty, error) {
 	return nil, nil
 }

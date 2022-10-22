@@ -1,6 +1,7 @@
 package main
 
 import (
+	"dbservice/layer"
 	"dbservice/usecase"
 	"fmt"
 	"log"
@@ -11,22 +12,25 @@ import (
 	"google.golang.org/grpc"
 )
 
-var PORT string
-
 func init() {
 	_ = godotenv.Load()
-	PORT = os.Getenv("PORT")
 }
 
 func main() {
-	listen, err := net.Listen("tcp", fmt.Sprintf(":%s", PORT))
+	listen, err := net.Listen("tcp", fmt.Sprintf(":%s", os.Getenv("APP_PORT")))
 	if err != nil {
 		log.Fatalln("error listening", err.Error())
 	}
 	grpcServer := grpc.NewServer()
 
-	usecase.RegisterEventLayerServer(grpcServer, &usecase.EventService{})
-	usecase.RegisterUserLayerServer(grpcServer, &usecase.UserService{})
+	layer.RegisterEventLayerServer(grpcServer, &usecase.EventService{})
+	layer.RegisterUserLayerServer(grpcServer, &usecase.UserService{})
+	layer.RegisterParticipantLayerServer(grpcServer, &usecase.ParticipantService{})
+	layer.RegisterSubscriptionLayerServer(grpcServer, &usecase.SubscriptionService{})
+	layer.RegisterLikeLayerServer(grpcServer, &usecase.LikeService{})
+	layer.RegisterCertificateLayerServer(grpcServer, &usecase.CertificateService{})
+
+	fmt.Println("DB SERVICE RUNNING ON PORT " + os.Getenv("APP_PORT"))
 
 	if err := grpcServer.Serve(listen); err != nil {
 		log.Fatalln("error grpc", err.Error())
