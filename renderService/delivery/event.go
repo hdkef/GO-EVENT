@@ -2,7 +2,7 @@ package delivery
 
 import (
 	"net/http"
-	"renderService/usecase"
+	"renderService/layer"
 	"renderService/utils"
 	"time"
 
@@ -11,13 +11,13 @@ import (
 )
 
 func GetAllEvent(c *gin.Context) {
-	eventService := utils.GetEventService(c)
+	grpc := utils.GetGRPCClient(c)
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
-	data, err := eventService.GetAllEvent(ctx, &usecase.Pagination{
+	data, err := grpc.Event.Get(ctx, &layer.Pagination{
 		LastID: 1,
 		Limit:  5,
-		Query:  "",
+		Query:  nil,
 	})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, err.Error())

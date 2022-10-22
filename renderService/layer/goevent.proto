@@ -1,0 +1,244 @@
+syntax = "proto3";
+
+option go_package = "renderService/layer";
+
+package layer;
+
+//EVENT adalah objek event
+service EventLayer {
+    rpc Get(Pagination) returns (EventList); //untuk melihat semua event tersedia
+    rpc GetByID(IDPayload) returns (Event); //untuk melihat hanya satu event via ID
+    rpc Edit(EventEditPayload) returns (Empty); //edit event
+    rpc Create(Event) returns (Empty); //create event
+    rpc Delete(IDPayload) returns (Empty); //delete event
+}
+
+//Participant adalah objek dari sebuah user yang ikut event
+service ParticipantLayer {
+    rpc Get(Pagination) returns (ParticipantList); //untuk melihat participant event oleh publisher
+    rpc TagByID(TagParticipantPayload) returns (Empty); //untuk ganti status
+    rpc Delete(IDPayload) returns (Empty); //remove participant
+}
+
+//Registration adalah objek dari formulir registrasi untuk event
+service RegisterLayer {
+    rpc Create(Register) returns (Empty); //membuat register oleh calon participant event
+    rpc GetByID(IDPayload) returns (Register); //melihat register by ID, diperlukan oleh publisher
+    rpc Delete(IDPayload) returns (Empty); //remove register
+}
+
+//Subscription
+service SubscriptionLayer {
+    rpc Create(Subscription) returns (Empty); //membuat subscription untuk publisher (user yang menciptakan event)
+    rpc Get(Pagination) returns (SubscriptionList); //melihat subscription, diperlukan oleh broadcastService dan user
+    rpc Delete(IDPayload) returns (Empty); //menghapus subscription, diperlukan oleh consumer (user yang subscribe publisher)
+}
+
+//Payment
+service PaymentLayer {
+    rpc GetByID(IDPayload) returns (Payment); //melihat payment, diperlukan oleh consumer
+    rpc GetByUserID(IDPayload) returns (PaymentList); //melihat payment, diperlukan oleh publisher
+    rpc Create(Payment) returns (Empty); //membuat payment, diperlukan oleh publisher
+    rpc Delete(Payment) returns (Empty); //menghapus payment, diperlukan oleh publisher
+}
+
+//Certificate
+service CertificateLayer {
+    rpc Create(Certificate) returns (Empty); //membuat certificate, diperlukan oleh fileService
+    rpc Get(Pagination) returns (CertificateList); //melihat certificate, diperlukan oleh consumer
+}
+
+//USER
+service UserLayer {
+    rpc SignIn(LoginPayload) returns (Token); //signin
+    rpc GetByID(IDPayload) returns (User); //untuk setting user
+    rpc Create(User) returns (Empty); //signup
+    rpc Edit(UserEditPayload) returns (Empty); //edit user
+}
+
+//Like
+service LikeLayer{
+    rpc Get(Pagination) returns (LikeList); //melihat like, diperlukan oleh broadcastService, consumer dan publisher
+    rpc Create(Like) returns (Empty); //membuat like, diperlukan oleh consumer
+    rpc Delete(IDPayload) returns (Empty); //menghapus like, diperlukan oleh consumer
+}
+
+message Like {
+    optional uint32 ID = 1;
+    uint32 user_ID = 2;
+    uint32 event_ID = 3;
+}
+
+message LikeList{
+    repeated Like list = 1;
+}
+
+message IDPayload{
+    uint32 ID = 1;
+}
+
+message Empty{
+
+}
+
+message Pagination{
+    uint32 lastID = 1;
+    uint32 limit = 2;
+    optional string query = 3;
+}
+
+message UserEditPayload{
+    string select = 1;
+    User user = 2;
+}
+
+message EventEditPayload{
+    string select = 1;
+    Event event = 2;
+}
+
+message Event{
+    optional uint32 ID = 1;
+    string name = 2;
+    string desc = 3;
+    optional string event_img = 4;
+    optional string password = 5;
+    optional string requirement = 6;
+    bool need_payment = 7;
+    bool need_ID = 8;
+    optional uint32 payment_ID = 9;
+    uint32 creator_ID = 10;
+    double payment_price = 11;
+    EventCategory event_category = 12;
+    bool is_offline = 13;
+    string location_address = 14;
+    string location_city = 15;
+    string location_province = 16;
+    string start_date = 17;
+    string finish_date = 18;
+    EventStatus status = 19;
+    string presence_question = 20;
+}
+
+enum EventCategory {
+    E_OTHER = 0;
+    E_MUSIC = 1;
+    E_HOBBIES = 2;
+    E_PERFORMING_AND_VISUAL_ARTS = 3;
+    E_EDUCATION = 4;
+    E_HEALTH = 5;
+    E_TRAVEL_AND_OUTDOOR = 6;
+    E_FOOD_AND_DRINK = 7;
+    E_SPORTS_AND_FITNESS = 8;
+    E_BUSSINESS = 9;
+}
+
+enum EventStatus {
+    E_UNSPECIFIED = 0;
+    E_OPEN_FOR_REG = 1;
+    E_CLOSE_FOR_REG = 2;
+    E_ON_GOING = 3;
+    E_FINISH = 4;
+}
+
+message EventList{
+    repeated Event list = 1;
+}
+
+message Participant{
+    optional uint32 ID = 1;
+    string name = 2;
+    string desc = 3;
+    string profile_img = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    string email = 7;
+    optional uint32 register_ID = 8;
+    ParticipantStatus status = 9;
+    optional uint32 certificate_ID = 10;
+    uint32 event_ID = 11;
+    uint32 user_ID = 12;
+}
+
+message TagParticipantPayload{
+    uint32 ID = 1;
+    ParticipantStatus status = 2;
+}
+
+enum ParticipantStatus {
+    P_UNSPECIFIED = 0;
+    P_REG_WAIT = 1; //mengisi formulir pendaftaran menunggu konfirmasi
+    P_REG_ACCEPT = 2; //formulir pendaftaran diterima
+    P_REG_REJECT = 3; //formulir pendaftaran ditolak
+    P_PRESENCE_WAIT = 4; //mengisi formulir absen menunggu konfirmasi
+    P_PRESENCE_ACCEPT = 5; //formulir absen diterima
+    P_PRESENCE_REJECT = 6; //formulir absen ditolak
+}
+
+message ParticipantList{
+    repeated Participant list = 1;
+}
+
+message Register{
+    optional uint32 ID = 1;
+    string requirement = 2;
+    optional string payment_img = 3;
+    optional string ID_img = 4; 
+}
+
+message RegisterList{
+    repeated Register list = 1;
+}
+
+message Subscription{
+    optional uint32 ID = 1;
+    uint32 publisher_ID = 2;
+    uint32 consumer_ID = 3;
+}
+
+message SubscriptionList{
+    repeated Subscription list = 1;
+}
+
+message Payment{
+    optional uint32 ID = 1;
+    string name = 2;
+    string detail = 3;
+}
+
+message PaymentList{
+    repeated Payment list = 1;
+}
+
+message CertificateList{
+    repeated Certificate list = 1;
+}
+
+message Certificate{
+    optional uint32 ID = 1;
+    string file_url = 2;
+}
+
+message Token{
+    string token = 1;
+}
+
+message LoginPayload{
+    uint32 email = 1;
+    string password = 2;
+}
+
+message User{
+    optional uint32 ID = 1;
+    string name = 2;
+    string desc = 3;
+    optional string profile_img = 4;
+    string created_at = 5;
+    string updated_at = 6;
+    string email = 7;
+    string password = 8;
+}
+
+message UserList{
+    repeated User list = 1;
+}

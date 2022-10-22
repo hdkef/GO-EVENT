@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetEventService(c *gin.Context) usecase.EventLayerClient {
-	value, exist := c.Get("eventService")
+func GetGRPCClient(c *gin.Context) usecase.GRPCClient {
+	value, exist := c.Get("GRPCClient")
 	if !exist {
 		log.Fatalln("no eventService in gin context")
 	}
-	return value.(usecase.EventLayerClient)
+	return value.(usecase.GRPCClient)
 }

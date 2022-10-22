@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"renderService/delivery"
+	"renderService/layer"
 	"renderService/usecase"
 
 	"github.com/gin-gonic/gin"
@@ -33,13 +34,19 @@ func main() {
 	defer dbServiceConn.Close()
 
 	//register service client
-	eventService := usecase.NewEventLayerClient(dbServiceConn)
-	userService := usecase.NewUserLayerClient(dbServiceConn)
+	GRPCClient := usecase.GRPCClient{}
+
+	GRPCClient.Event = layer.NewEventLayerClient(dbServiceConn)
+	GRPCClient.User = layer.NewUserLayerClient(dbServiceConn)
+	GRPCClient.Participant = layer.NewParticipantLayerClient(dbServiceConn)
+	GRPCClient.Like = layer.NewLikeLayerClient(dbServiceConn)
+	GRPCClient.Subscription = layer.NewSubscriptionLayerClient(dbServiceConn)
+	GRPCClient.Certificate = layer.NewCertificateLayerClient(dbServiceConn)
 
 	r := gin.New()
 
-	//middleware grpc client
-	r.Use(delivery.GRPCMiddleware(eventService, userService))
+	//middleware
+	r.Use(delivery.GRPCMiddleware(GRPCClient))
 	//initialize routes
 	delivery.Routes(r)
 	//run server

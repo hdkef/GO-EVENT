@@ -23,4 +23,8 @@ func Routes(r *gin.Engine) {
 	//Event
 	event := ver.Group("/event")
 	event.GET("", GetAllEvent)
+
+	//User
+	user := ver.Group("/user")
+	user.POST("", SignUp)
 }
