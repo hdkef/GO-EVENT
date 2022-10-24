@@ -13,12 +13,23 @@ type UserService struct {
 	DB *gorm.DB
 }
 
-func (e *UserService) SignIn(ctx context.Context, payload *layer.LoginPayload) (*layer.Token, error) {
-	return nil, nil
+func (e *UserService) GetByEmail(ctx context.Context, payload *layer.EmailPayload) (*layer.User, error) {
+	//create user repo
+	repo := repository.User{
+		DB: e.DB,
+	}
+
+	//find user by email
+	return repo.GetByEmail(&ctx, &payload.Email)
 }
 
-func (e *UserService) GetUserID(ctx context.Context, id *layer.IDPayload) (*layer.User, error) {
-	return nil, nil
+func (e *UserService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer.User, error) {
+	//create user repo
+	repo := repository.User{
+		DB: e.DB,
+	}
+
+	return repo.GetByID(&ctx, &id.ID)
 }
 
 func (e *UserService) Create(ctx context.Context, payload *layer.User) (*layer.Empty, error) {
@@ -28,8 +39,8 @@ func (e *UserService) Create(ctx context.Context, payload *layer.User) (*layer.E
 		User: payload,
 	}
 
-	//save
-	err := repo.CreateUser(ctx)
+	//create
+	err := repo.Create(&ctx)
 	if err != nil {
 		return &layer.Empty{}, err
 	}
@@ -38,6 +49,17 @@ func (e *UserService) Create(ctx context.Context, payload *layer.User) (*layer.E
 }
 
 func (e *UserService) Edit(ctx context.Context, payload *layer.UserEditPayload) (*layer.Empty, error) {
+	//create user repo
+	repo := repository.User{
+		DB:   e.DB,
+		User: payload.User,
+	}
+
+	//edit
+	err := repo.Edit(&ctx, payload.Select, &payload.ID)
+	if err != nil {
+		return &layer.Empty{}, err
+	}
 
 	return &layer.Empty{}, nil
 }

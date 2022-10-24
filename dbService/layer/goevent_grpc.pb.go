@@ -1042,7 +1042,7 @@ var CertificateLayer_ServiceDesc = grpc.ServiceDesc{
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type UserLayerClient interface {
-	SignIn(ctx context.Context, in *LoginPayload, opts ...grpc.CallOption) (*Token, error)
+	GetByEmail(ctx context.Context, in *EmailPayload, opts ...grpc.CallOption) (*User, error)
 	GetByID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*User, error)
 	Create(ctx context.Context, in *User, opts ...grpc.CallOption) (*Empty, error)
 	Edit(ctx context.Context, in *UserEditPayload, opts ...grpc.CallOption) (*Empty, error)
@@ -1056,9 +1056,9 @@ func NewUserLayerClient(cc grpc.ClientConnInterface) UserLayerClient {
 	return &userLayerClient{cc}
 }
 
-func (c *userLayerClient) SignIn(ctx context.Context, in *LoginPayload, opts ...grpc.CallOption) (*Token, error) {
-	out := new(Token)
-	err := c.cc.Invoke(ctx, "/layer.UserLayer/SignIn", in, out, opts...)
+func (c *userLayerClient) GetByEmail(ctx context.Context, in *EmailPayload, opts ...grpc.CallOption) (*User, error) {
+	out := new(User)
+	err := c.cc.Invoke(ctx, "/layer.UserLayer/GetByEmail", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -1096,7 +1096,7 @@ func (c *userLayerClient) Edit(ctx context.Context, in *UserEditPayload, opts ..
 // All implementations must embed UnimplementedUserLayerServer
 // for forward compatibility
 type UserLayerServer interface {
-	SignIn(context.Context, *LoginPayload) (*Token, error)
+	GetByEmail(context.Context, *EmailPayload) (*User, error)
 	GetByID(context.Context, *IDPayload) (*User, error)
 	Create(context.Context, *User) (*Empty, error)
 	Edit(context.Context, *UserEditPayload) (*Empty, error)
@@ -1107,8 +1107,8 @@ type UserLayerServer interface {
 type UnimplementedUserLayerServer struct {
 }
 
-func (UnimplementedUserLayerServer) SignIn(context.Context, *LoginPayload) (*Token, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
+func (UnimplementedUserLayerServer) GetByEmail(context.Context, *EmailPayload) (*User, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByEmail not implemented")
 }
 func (UnimplementedUserLayerServer) GetByID(context.Context, *IDPayload) (*User, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
@@ -1132,20 +1132,20 @@ func RegisterUserLayerServer(s grpc.ServiceRegistrar, srv UserLayerServer) {
 	s.RegisterService(&UserLayer_ServiceDesc, srv)
 }
 
-func _UserLayer_SignIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginPayload)
+func _UserLayer_GetByEmail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmailPayload)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(UserLayerServer).SignIn(ctx, in)
+		return srv.(UserLayerServer).GetByEmail(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/layer.UserLayer/SignIn",
+		FullMethod: "/layer.UserLayer/GetByEmail",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(UserLayerServer).SignIn(ctx, req.(*LoginPayload))
+		return srv.(UserLayerServer).GetByEmail(ctx, req.(*EmailPayload))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1212,8 +1212,8 @@ var UserLayer_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UserLayerServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SignIn",
-			Handler:    _UserLayer_SignIn_Handler,
+			MethodName: "GetByEmail",
+			Handler:    _UserLayer_GetByEmail_Handler,
 		},
 		{
 			MethodName: "GetByID",

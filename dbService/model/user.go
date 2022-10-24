@@ -9,6 +9,6 @@ type User struct {
 	ProfileImg string    `gorm:"type:varchar(255);"`
 	CreatedAt  time.Time `gorm:"type:timestamp;default:NOW()"`
 	UpdatedAt  time.Time `gorm:"type:timestamp;default:NOW()"`
-	Email      string    `gorm:"type:varchar(255);not null"`
+	Email      string    `gorm:"type:varchar(255);not null;uniqueIndex"`
 	Password   string    `gorm:"type:text;not null"`
 }

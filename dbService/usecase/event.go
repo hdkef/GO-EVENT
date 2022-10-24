@@ -13,25 +13,15 @@ type EventService struct {
 }
 
 func (e *EventService) Get(ctx context.Context, pagination *layer.Pagination) (*layer.EventList, error) {
-	nama := "marathon"
-	desc := "event tahunan marathon di bandung"
-	needPayment := false
-	needID := false
-	isOffline := true
-	presenceQ := "{`q`:[]}"
-	status := layer.EventStatus_E_OPEN_FOR_REG
+	// nama := "marathon"
+	// desc := "event tahunan marathon di bandung"
+	// needPayment := false
+	// needID := false
+	// isOffline := true
+	// presenceQ := "{`q`:[]}"
+	// status := layer.EventStatus_E_OPEN_FOR_REG
 
-	list := []*layer.Event{
-		{
-			Name:             nama,
-			Desc:             desc,
-			NeedPayment:      needPayment,
-			Need_ID:          needID,
-			IsOffline:        isOffline,
-			PresenceQuestion: presenceQ,
-			Status:           status,
-		},
-	}
+	list := []*layer.Event{}
 
 	return &layer.EventList{
 		List: list,

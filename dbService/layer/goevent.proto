@@ -50,7 +50,7 @@ service CertificateLayer {
 
 //USER
 service UserLayer {
-    rpc SignIn(LoginPayload) returns (Token); //signin
+    rpc GetByEmail(EmailPayload) returns (User); //untuk signin
     rpc GetByID(IDPayload) returns (User); //untuk setting user
     rpc Create(User) returns (Empty); //signup
     rpc Edit(UserEditPayload) returns (Empty); //edit user
@@ -81,6 +81,10 @@ message Empty{
 
 }
 
+message EmailPayload{
+    string email = 1;
+}
+
 message Pagination{
     uint32 lastID = 1;
     uint32 limit = 2;
@@ -88,36 +92,38 @@ message Pagination{
 }
 
 message UserEditPayload{
-    string select = 1;
+    repeated string select = 1;
     User user = 2;
+    uint32 ID = 3;
 }
 
 message EventEditPayload{
-    string select = 1;
+    repeated string select = 1;
     Event event = 2;
+    uint32 ID = 3;
 }
 
 message Event{
     optional uint32 ID = 1;
-    string name = 2;
-    string desc = 3;
+    optional string name = 2;
+    optional string desc = 3;
     optional string event_img = 4;
     optional string password = 5;
     optional string requirement = 6;
-    bool need_payment = 7;
-    bool need_ID = 8;
+    optional bool need_payment = 7;
+    optional bool need_ID = 8;
     optional uint32 payment_ID = 9;
-    uint32 creator_ID = 10;
-    double payment_price = 11;
-    EventCategory event_category = 12;
-    bool is_offline = 13;
-    string location_address = 14;
-    string location_city = 15;
-    string location_province = 16;
-    string start_date = 17;
-    string finish_date = 18;
-    EventStatus status = 19;
-    string presence_question = 20;
+    optional uint32 creator_ID = 10;
+    optional double payment_price = 11;
+    optional EventCategory event_category = 12;
+    optional bool is_offline = 13;
+    optional string location_address = 14;
+    optional string location_city = 15;
+    optional string location_province = 16;
+    optional string start_date = 17;
+    optional string finish_date = 18;
+    optional EventStatus status = 19;
+    optional string presence_question = 20;
 }
 
 enum EventCategory {
@@ -147,17 +153,17 @@ message EventList{
 
 message Participant{
     optional uint32 ID = 1;
-    string name = 2;
-    string desc = 3;
-    string profile_img = 4;
-    string created_at = 5;
-    string updated_at = 6;
-    string email = 7;
+    optional string name = 2;
+    optional string desc = 3;
+    optional string profile_img = 4;
+    optional string created_at = 5;
+    optional string updated_at = 6;
+    optional string email = 7;
     optional uint32 register_ID = 8;
-    ParticipantStatus status = 9;
+    optional ParticipantStatus status = 9;
     optional uint32 certificate_ID = 10;
-    uint32 event_ID = 11;
-    uint32 user_ID = 12;
+    optional uint32 event_ID = 11;
+    optional uint32 user_ID = 12;
 }
 
 message TagParticipantPayload{
@@ -181,7 +187,7 @@ message ParticipantList{
 
 message Register{
     optional uint32 ID = 1;
-    string requirement = 2;
+    optional string requirement = 2;
     optional string payment_img = 3;
     optional string ID_img = 4; 
 }
@@ -202,8 +208,8 @@ message SubscriptionList{
 
 message Payment{
     optional uint32 ID = 1;
-    string name = 2;
-    string detail = 3;
+    optional string name = 2;
+    optional string detail = 3;
 }
 
 message PaymentList{
@@ -219,24 +225,15 @@ message Certificate{
     string file_url = 2;
 }
 
-message Token{
-    string token = 1;
-}
-
-message LoginPayload{
-    uint32 email = 1;
-    string password = 2;
-}
-
 message User{
     optional uint32 ID = 1;
-    string name = 2;
-    string desc = 3;
+    optional string name = 2;
+    optional string desc = 3;
     optional string profile_img = 4;
-    string created_at = 5;
-    string updated_at = 6;
-    string email = 7;
-    string password = 8;
+    optional string created_at = 5;
+    optional string updated_at = 6;
+    optional string email = 7;
+    optional string password = 8;
 }
 
 message UserList{
