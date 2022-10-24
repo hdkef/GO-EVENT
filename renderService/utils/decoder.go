@@ -62,6 +62,18 @@ func DecodeEvent(c *gin.Context, event *layer.Event) ([]string, error) {
 		selectQ = append(selectQ, "desc")
 	}
 
+	key, exist = form["event_img"]
+	if exist {
+		event.EventImg = &key[0]
+		selectQ = append(selectQ, "event_img")
+	}
+
+	key, exist = form["password"]
+	if exist {
+		event.Password = &key[0]
+		selectQ = append(selectQ, "password")
+	}
+
 	key, exist = form["requirement"]
 	if exist {
 		event.Requirement = &key[0]
@@ -162,6 +174,12 @@ func DecodeEvent(c *gin.Context, event *layer.Event) ([]string, error) {
 	if exist {
 		event.PresenceQuestion = &key[0]
 		selectQ = append(selectQ, "presence_question")
+	}
+
+	key, exist = form["media_link"]
+	if exist {
+		event.MediaLink = &key[0]
+		selectQ = append(selectQ, "media_link")
 	}
 
 	return selectQ, nil
