@@ -104,3 +104,9 @@ func (u *Event) Create(ctx *context.Context) error {
 	mdl.Status = uint8(1)
 	return u.DB.Create(&mdl).Error
 }
+
+func (u *Event) Edit(ctx *context.Context, selectq []string, ID *uint32) error {
+	mdl := setEventModel(u)
+	setEventUpdatedAt(&mdl)
+	return u.DB.Model(&model.Event{}).Select(selectq).Where("id = ?", *ID).Updates(&mdl).Error
+}

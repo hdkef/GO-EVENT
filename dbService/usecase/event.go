@@ -52,5 +52,16 @@ func (e *EventService) Delete(ctx context.Context, id *layer.IDPayload) (*layer.
 }
 
 func (e *EventService) Edit(ctx context.Context, payload *layer.EventEditPayload) (*layer.Empty, error) {
-	return nil, nil
+	//create event repo
+	repo := repository.Event{
+		DB:    e.DB,
+		Event: payload.Event,
+	}
+
+	//edit
+	err := repo.Edit(&ctx, payload.Select, &payload.ID)
+	if err != nil {
+		return &layer.Empty{}, err
+	}
+	return &layer.Empty{}, nil
 }
