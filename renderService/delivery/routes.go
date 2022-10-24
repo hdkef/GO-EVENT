@@ -1,30 +1,24 @@
 package delivery
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 )
-
-var VERSION string
-
-func init() {
-	_ = godotenv.Load()
-	VERSION = os.Getenv("APP_VER")
-}
 
 func Routes(r *gin.Engine) {
 
-	//ApiVer
-	ver := r.Group(fmt.Sprintf("/api/%s", VERSION))
+	userRoute := UserRoute{}
 
+	//Render Routes
 	//Event
-	event := ver.Group("/event")
+	event := r.Group("/event")
 	event.GET("", GetAllEvent)
 
 	//User
-	user := ver.Group("/user")
-	user.POST("", SignUp)
+	user := r.Group("/user")
+	user.GET("/:id", userRoute.RenderGetByID)
+	user.POST("/signup", userRoute.RenderSignUp)
+	user.POST("/signin", userRoute.RenderSignIn)
+	user.PATCH("/:id", userRoute.RenderEdit)
+
+	//API Routes (only if need AJAX)
 }

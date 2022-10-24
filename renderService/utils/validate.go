@@ -1,35 +1,57 @@
 package utils
 
 import (
-	"errors"
+	"fmt"
+	"html"
 	"net/mail"
 	"renderService/layer"
 )
 
-var ErrNameNotExist = errors.New("name cannot be empty")
-var ErrEmailNotExist = errors.New("email cannot be empty")
-var ErrDescNotExist = errors.New("description cannot be empty")
-var ErrPasswordNotExist = errors.New("password cannot be empty")
+const VALIDATE_TYPE_CREATE = uint8(1)
+const VALIDATE_TYPE_UPDATE = uint8(2)
 
-func ValidateUser(payload *layer.User) error {
-	//name is a must
-	if payload.Name == "" {
-		return ErrNameNotExist
+func errEmptyString(name string) error {
+	return fmt.Errorf("%s is empty", name)
+}
+
+func escapeString(argv ...*string) {
+	for _, v := range argv {
+		if v != nil {
+			*v = html.EscapeString(*v)
+		}
 	}
-	//email is a must & must valid
-	if payload.Email == "" {
-		return ErrEmailNotExist
-	}
-	if _, err := mail.ParseAddress(payload.Email); err != nil {
-		return err
-	}
-	//desc is a must
-	if payload.Desc == "" {
-		return ErrDescNotExist
-	}
-	//password is a must
-	if payload.Password == "" {
-		return ErrPasswordNotExist
+}
+
+func mustNotEmptyString(name string, value *string) error {
+	if value == nil {
+		return errEmptyString(name)
 	}
 	return nil
+}
+
+func ValidateUser(payload *layer.User, validateType uint8) error {
+	//escape string XSS
+	escapeString(payload.Name, payload.Desc, payload.Email, payload.Password)
+
+	var err error
+	switch validateType {
+	case VALIDATE_TYPE_CREATE:
+		//name is a must
+		err = mustNotEmptyString("name", payload.Name)
+		//email is a must & must valid
+		err = mustNotEmptyString("email", payload.Email)
+		_, err = mail.ParseAddress(*payload.Email)
+		//desc is a must
+		err = mustNotEmptyString("description", payload.Desc)
+		//password is a must
+		err = mustNotEmptyString("password", payload.Password)
+		return err
+	case VALIDATE_TYPE_UPDATE:
+		//email must be right format
+		if payload.Email != nil {
+			_, err = mail.ParseAddress(*payload.Email)
+		}
+		return err
+	}
+	return err
 }

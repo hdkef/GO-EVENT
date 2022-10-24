@@ -1,6 +1,11 @@
 package usecase
 
-import "renderService/layer"
+import (
+	"log"
+	"renderService/layer"
+
+	"github.com/gin-gonic/gin"
+)
 
 type GRPCClient struct {
 	Event        layer.EventLayerClient
@@ -9,4 +14,12 @@ type GRPCClient struct {
 	Subscription layer.SubscriptionLayerClient
 	Certificate  layer.CertificateLayerClient
 	Like         layer.LikeLayerClient
+}
+
+func GetGRPCClient(c *gin.Context) GRPCClient {
+	value, exist := c.Get("GRPCClient")
+	if !exist {
+		log.Fatalln("no eventService in gin context")
+	}
+	return value.(GRPCClient)
 }

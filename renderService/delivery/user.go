@@ -1,60 +1,63 @@
 package delivery
 
 import (
-	"context"
+	"fmt"
 	"net/http"
-	"renderService/layer"
-	"renderService/utils"
-	"time"
+	"renderService/usecase"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/crypto/bcrypt"
 )
 
-func SignUp(c *gin.Context) {
-	//decode payload
-	var user layer.User
+type UserRoute struct{}
 
-	err := utils.DecodeUser(c, &user)
+func (u *UserRoute) RenderSignIn(c *gin.Context) {
+	service := usecase.UserService{}
+	err := service.SignIn(c)
 	if err != nil {
-		//render error page
-
+		//render error
 		return
 	}
+	//create token
+	s := "initokenpurapurayangdibikinuntuktesting"
 
-	//validate user
-	err = utils.ValidateUser(&user)
+	//set token to cookies
+
+	//render ok
+	c.JSON(http.StatusOK, s)
+}
+
+func (u *UserRoute) RenderSignUp(c *gin.Context) {
+	service := usecase.UserService{}
+	err := service.SignUp(c)
 	if err != nil {
-		//render error page
-
+		//render error
+		fmt.Println(err)
 		return
 	}
-
-	//hashingPassword
-	hashedPass, err := bcrypt.GenerateFromPassword([]byte(user.Password), 5)
-	if err != nil {
-		//render error page
-
-		return
-	}
-
-	//set pass to hashedPassword
-	user.Password = string(hashedPass)
-
-	//get grpc client
-	grpc := utils.GetGRPCClient(c)
-
-	//sign up
-	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
-	defer cancel()
-
-	_, err = grpc.User.Create(ctx, &user)
-	if err != nil {
-		//render error page
-
-		return
-	}
-
-	//render ok page
+	//render ok
 	c.JSON(http.StatusOK, "ok")
+}
+
+func (u *UserRoute) RenderEdit(c *gin.Context) {
+	service := usecase.UserService{}
+	err := service.Edit(c)
+	if err != nil {
+		//render error
+
+		return
+	}
+	//render ok
+	c.JSON(http.StatusOK, "ok")
+}
+
+func (u *UserRoute) RenderGetByID(c *gin.Context) {
+	service := usecase.UserService{}
+	data, err := service.GetByID(c)
+	if err != nil {
+		//render error
+		fmt.Println(err)
+		return
+	}
+	//render ok
+	c.JSON(http.StatusOK, data)
 }
