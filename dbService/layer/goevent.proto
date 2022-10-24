@@ -124,6 +124,7 @@ message Event{
     optional string finish_date = 18;
     optional EventStatus status = 19;
     optional string presence_question = 20;
+    optional string media_link = 21;
 }
 
 enum EventCategory {

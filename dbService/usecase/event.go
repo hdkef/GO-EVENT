@@ -3,6 +3,7 @@ package usecase
 import (
 	context "context"
 	"dbservice/layer"
+	"dbservice/repository"
 
 	"gorm.io/gorm"
 )
@@ -33,7 +34,15 @@ func (e *EventService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer
 }
 
 func (e *EventService) Create(ctx context.Context, payload *layer.Event) (*layer.Empty, error) {
-	return nil, nil
+	// create event repo
+	repo := repository.Event{}
+
+	//create
+	err := repo.Create(&ctx)
+	if err != nil {
+		return &layer.Empty{}, err
+	}
+	return &layer.Empty{}, nil
 }
 
 func (e *EventService) Delete(ctx context.Context, id *layer.IDPayload) (*layer.Empty, error) {
