@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	"fmt"
 	"net/http"
 	"renderService/usecase"
 
@@ -14,6 +15,7 @@ func (u *EventRoute) Create(c *gin.Context) {
 	err := service.Create(c)
 	if err != nil {
 		//render error
+		fmt.Println(err)
 		return
 	}
 

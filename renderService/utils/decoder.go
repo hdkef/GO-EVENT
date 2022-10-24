@@ -120,7 +120,7 @@ func DecodeEvent(c *gin.Context, event *layer.Event) ([]string, error) {
 	key, exist = form["event_category"]
 	if exist {
 		b, _ := strconv.ParseInt(key[0], 10, 32)
-		c := layer.EventCategory(int32(b))
+		c := decodeEventCategory(int32(b))
 		event.EventCategory = &c
 		selectQ = append(selectQ, "event_category")
 	}
@@ -165,7 +165,7 @@ func DecodeEvent(c *gin.Context, event *layer.Event) ([]string, error) {
 	key, exist = form["status"]
 	if exist {
 		b, _ := strconv.ParseInt(key[0], 10, 32)
-		c := layer.EventStatus(int32(b))
+		c := decodeEventStatus(int32(b))
 		event.Status = &c
 		selectQ = append(selectQ, "status")
 	}
@@ -183,4 +183,46 @@ func DecodeEvent(c *gin.Context, event *layer.Event) ([]string, error) {
 	}
 
 	return selectQ, nil
+}
+
+func decodeEventCategory(i int32) layer.EventCategory {
+	switch i {
+	case 0:
+		return layer.EventCategory_E_OTHER
+	case 1:
+		return layer.EventCategory_E_MUSIC
+	case 2:
+		return layer.EventCategory_E_HOBBIES
+	case 3:
+		return layer.EventCategory_E_PERFORMING_AND_VISUAL_ARTS
+	case 4:
+		return layer.EventCategory_E_EDUCATION
+	case 5:
+		return layer.EventCategory_E_HEALTH
+	case 6:
+		return layer.EventCategory_E_TRAVEL_AND_OUTDOOR
+	case 7:
+		return layer.EventCategory_E_FOOD_AND_DRINK
+	case 8:
+		return layer.EventCategory_E_SPORTS_AND_FITNESS
+	case 9:
+		return layer.EventCategory_E_BUSSINESS
+	}
+	return layer.EventCategory_E_OTHER
+}
+
+func decodeEventStatus(i int32) layer.EventStatus {
+	switch i {
+	case 0:
+		return layer.EventStatus_E_UNSPECIFIED
+	case 1:
+		return layer.EventStatus_E_OPEN_FOR_REG
+	case 2:
+		return layer.EventStatus_E_CLOSE_FOR_REG
+	case 3:
+		return layer.EventStatus_E_ON_GOING
+	case 4:
+		return layer.EventStatus_E_FINISH
+	}
+	return layer.EventStatus_E_UNSPECIFIED
 }
