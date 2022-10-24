@@ -15,6 +15,18 @@ func (u *EventRoute) Create(c *gin.Context) {
 	err := service.Create(c)
 	if err != nil {
 		//render error
+		return
+	}
+
+	//render ok
+	c.JSON(http.StatusOK, "ok")
+}
+
+func (u *EventRoute) Edit(c *gin.Context) {
+	service := usecase.EventService{}
+	err := service.Edit(c)
+	if err != nil {
+		//render error
 		fmt.Println(err)
 		return
 	}

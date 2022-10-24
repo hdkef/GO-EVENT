@@ -31,7 +31,7 @@ func Routes(r *gin.Engine) {
 	event.POST("/new", eventRoute.Create)
 	//edit
 	event.GET("/edit/:id", eventRoute.Create)
-	event.PATCH("/edit/:id", eventRoute.Create)
+	event.PATCH("/edit/:id", eventRoute.Edit)
 	//sendmail
 	event.GET("/:id/sendEmail", eventRoute.Create)
 	event.POST("/:id/sendEmail", eventRoute.Create)

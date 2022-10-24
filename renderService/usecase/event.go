@@ -63,3 +63,46 @@ func (u *EventService) Create(c *gin.Context) error {
 
 	return nil
 }
+
+func (u *EventService) Edit(c *gin.Context) error {
+	//get param id
+	id, err := utils.GetParamID(c)
+	if err != nil {
+		//send error
+
+		return err
+	}
+
+	//decode payload
+	var event layer.Event
+
+	selectQ, err := utils.DecodeEvent(c, &event)
+	if err != nil {
+		//send error
+
+		return err
+	}
+
+	//validate event
+	err = utils.ValidateEvent(&event, utils.VALIDATE_TYPE_UPDATE)
+	if err != nil {
+		//send error
+
+		return err
+	}
+
+	//get grpc client
+	grpc := GetGRPCClient(c)
+
+	//edit
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	_, err = grpc.Event.Edit(ctx, &layer.EventEditPayload{ID: id, Select: selectQ, Event: &event})
+	if err != nil {
+		//send error
+
+		return err
+	}
+	return nil
+}

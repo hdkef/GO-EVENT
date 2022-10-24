@@ -20,21 +20,25 @@ func DecodeUser(c *gin.Context, user *layer.User) ([]string, error) {
 	key, exist := form["name"]
 	if exist {
 		user.Name = &key[0]
+		selectQ = append(selectQ, "name")
 	}
 
 	key, exist = form["desc"]
 	if exist {
 		user.Desc = &key[0]
+		selectQ = append(selectQ, "desc")
 	}
 
 	key, exist = form["email"]
 	if exist {
 		user.Email = &key[0]
+		selectQ = append(selectQ, "email")
 	}
 
 	key, exist = form["password"]
 	if exist {
 		user.Password = &key[0]
+		selectQ = append(selectQ, "password")
 	}
 
 	return selectQ, nil
