@@ -125,6 +125,8 @@ message Event{
     optional EventStatus status = 19;
     optional string presence_question = 20;
     optional string media_link = 21;
+    optional string created_at = 22;
+    optional string updated_at = 23;
 }
 
 enum EventCategory {

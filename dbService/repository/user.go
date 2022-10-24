@@ -38,28 +38,28 @@ func setUserModel(u *User) model.User {
 	return mdl
 }
 
-func setUpdatedAtCreatedAt(u *model.User) {
-	setCreatedAt(u)
-	setUpdatedAt(u)
+func setUserUpdatedAtCreatedAt(u *model.User) {
+	setUserCreatedAt(u)
+	setUserUpdatedAt(u)
 }
 
-func setUpdatedAt(u *model.User) {
+func setUserUpdatedAt(u *model.User) {
 	u.UpdatedAt = time.Now()
 }
 
-func setCreatedAt(u *model.User) {
+func setUserCreatedAt(u *model.User) {
 	u.UpdatedAt = time.Now()
 }
 
 func (u *User) Create(ctx *context.Context) error {
 	mdl := setUserModel(u)
-	setUpdatedAtCreatedAt(&mdl)
+	setUserUpdatedAtCreatedAt(&mdl)
 	return u.DB.Create(&mdl).Error
 }
 
 func (u *User) Edit(ctx *context.Context, selectq []string, ID *uint32) error {
 	mdl := setUserModel(u)
-	setUpdatedAt(&mdl)
+	setUserUpdatedAt(&mdl)
 	return u.DB.Model(&model.User{}).Select(selectq).Where("id = ?", *ID).Updates(&mdl).Error
 }
 

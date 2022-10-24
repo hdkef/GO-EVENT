@@ -35,8 +35,10 @@ func (e *EventService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer
 
 func (e *EventService) Create(ctx context.Context, payload *layer.Event) (*layer.Empty, error) {
 	// create event repo
-	repo := repository.Event{}
-
+	repo := repository.Event{
+		DB:    e.DB,
+		Event: payload,
+	}
 	//create
 	err := repo.Create(&ctx)
 	if err != nil {
