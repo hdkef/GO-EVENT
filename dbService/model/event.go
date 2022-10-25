@@ -5,7 +5,7 @@ import "time"
 type Event struct {
 	ID               uint32    `gorm:"primaryKey;autoIncrement"`
 	Name             string    `gorm:"type:varchar(255);not null"`
-	Desc             string    `gorm:"type:varchar(255);not null"`
+	Description      string    `gorm:"type:varchar(255);not null"`
 	CreatedAt        time.Time `gorm:"type:timestamp;default:NOW()"`
 	UpdatedAt        time.Time `gorm:"type:timestamp;default:NOW()"`
 	EventImg         string    `gorm:"type:varchar(255);"`

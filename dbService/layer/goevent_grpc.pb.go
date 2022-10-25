@@ -413,6 +413,7 @@ type RegisterLayerClient interface {
 	Create(ctx context.Context, in *Register, opts ...grpc.CallOption) (*Empty, error)
 	GetByID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Register, error)
 	Delete(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Empty, error)
+	Get(ctx context.Context, in *Pagination, opts ...grpc.CallOption) (*RegisterList, error)
 }
 
 type registerLayerClient struct {
@@ -450,6 +451,15 @@ func (c *registerLayerClient) Delete(ctx context.Context, in *IDPayload, opts ..
 	return out, nil
 }
 
+func (c *registerLayerClient) Get(ctx context.Context, in *Pagination, opts ...grpc.CallOption) (*RegisterList, error) {
+	out := new(RegisterList)
+	err := c.cc.Invoke(ctx, "/layer.RegisterLayer/Get", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // RegisterLayerServer is the server API for RegisterLayer service.
 // All implementations must embed UnimplementedRegisterLayerServer
 // for forward compatibility
@@ -457,6 +467,7 @@ type RegisterLayerServer interface {
 	Create(context.Context, *Register) (*Empty, error)
 	GetByID(context.Context, *IDPayload) (*Register, error)
 	Delete(context.Context, *IDPayload) (*Empty, error)
+	Get(context.Context, *Pagination) (*RegisterList, error)
 	mustEmbedUnimplementedRegisterLayerServer()
 }
 
@@ -472,6 +483,9 @@ func (UnimplementedRegisterLayerServer) GetByID(context.Context, *IDPayload) (*R
 }
 func (UnimplementedRegisterLayerServer) Delete(context.Context, *IDPayload) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedRegisterLayerServer) Get(context.Context, *Pagination) (*RegisterList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
 func (UnimplementedRegisterLayerServer) mustEmbedUnimplementedRegisterLayerServer() {}
 
@@ -540,6 +554,24 @@ func _RegisterLayer_Delete_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
+func _RegisterLayer_Get_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Pagination)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RegisterLayerServer).Get(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/layer.RegisterLayer/Get",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RegisterLayerServer).Get(ctx, req.(*Pagination))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // RegisterLayer_ServiceDesc is the grpc.ServiceDesc for RegisterLayer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -558,6 +590,10 @@ var RegisterLayer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _RegisterLayer_Delete_Handler,
+		},
+		{
+			MethodName: "Get",
+			Handler:    _RegisterLayer_Get_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

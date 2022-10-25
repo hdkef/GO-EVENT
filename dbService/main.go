@@ -35,6 +35,7 @@ func main() {
 	layer.RegisterSubscriptionLayerServer(grpcServer, &usecase.SubscriptionService{DB: db})
 	layer.RegisterLikeLayerServer(grpcServer, &usecase.LikeService{DB: db})
 	layer.RegisterCertificateLayerServer(grpcServer, &usecase.CertificateService{DB: db})
+	layer.RegisterRegisterLayerServer(grpcServer, &usecase.RegisterService{DB: db})
 
 	fmt.Println("DB SERVICE RUNNING ON PORT " + os.Getenv("APP_PORT"))
 

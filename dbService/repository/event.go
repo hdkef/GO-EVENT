@@ -15,16 +15,16 @@ type Event struct {
 	*layer.Event
 }
 
-func setEventModel(u *Event) model.Event {
+func setEventModel(u *Event) (model.Event, error) {
 	mdl := model.Event{}
 	if u.Name != nil {
 		mdl.Name = *u.Name
 	}
-	if u.Desc != nil {
-		mdl.Desc = *u.Desc
+	if u.Description != nil {
+		mdl.Description = *u.Description
 	}
 	if u.Password != nil {
-		mdl.Desc = *u.Desc
+		mdl.Password = *u.Password
 	}
 	if u.Requirement != nil {
 		mdl.Requirement = *u.Requirement
@@ -69,7 +69,7 @@ func setEventModel(u *Event) model.Event {
 	if u.FinishDate != nil {
 		tmp, err := time.Parse("2006-01-02T15:04:05Z07:00", *u.FinishDate)
 		if err != nil {
-			panic(err.Error())
+			return model.Event{}, err
 		}
 		mdl.FinishDate = tmp
 	}
@@ -82,7 +82,7 @@ func setEventModel(u *Event) model.Event {
 	if u.MediaLink != nil {
 		mdl.MediaLink = *u.MediaLink
 	}
-	return mdl
+	return mdl, nil
 }
 
 func setEventUpdatedAtCreatedAt(u *model.Event) {
@@ -99,7 +99,10 @@ func setEventCreatedAt(u *model.Event) {
 }
 
 func (u *Event) Create(ctx *context.Context) error {
-	mdl := setEventModel(u)
+	mdl, err := setEventModel(u)
+	if err != nil {
+		return err
+	}
 	setEventUpdatedAtCreatedAt(&mdl)
 	// set status into 1 = open for reg
 	mdl.Status = 1
@@ -107,7 +110,10 @@ func (u *Event) Create(ctx *context.Context) error {
 }
 
 func (u *Event) Edit(ctx *context.Context, selectq []string, ID *uint32) error {
-	mdl := setEventModel(u)
+	mdl, err := setEventModel(u)
+	if err != nil {
+		return err
+	}
 	setEventUpdatedAt(&mdl)
 	return u.DB.Model(&model.Event{}).Select(selectq).Where("id = ?", *ID).Updates(&mdl).Error
 }
@@ -116,7 +122,7 @@ func (u *Event) Get(ctx *context.Context, pagination *layer.Pagination) (*layer.
 
 	result := layer.EventList{}
 	if pagination.Query != nil {
-		err := u.DB.Model(&model.Event{}).Where("id > ?", *pagination.LastID).Where(pagination.Query).Limit(int(*pagination.Limit)).Find(&result.List).Error
+		err := u.DB.Model(&model.Event{}).Where(fmt.Sprintf("id > ? AND %s", *pagination.Query), *pagination.LastID).Limit(int(*pagination.Limit)).Find(&result.List).Error
 		if err != nil {
 			return &layer.EventList{}, err
 		}

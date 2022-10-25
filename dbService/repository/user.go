@@ -23,8 +23,8 @@ func setUserModel(u *User) model.User {
 	if u.Name != nil {
 		mdl.Name = *u.Name
 	}
-	if u.Desc != nil {
-		mdl.Desc = *u.Desc
+	if u.Description != nil {
+		mdl.Description = *u.Description
 	}
 	if u.ProfileImg != nil {
 		mdl.ProfileImg = *u.ProfileImg
