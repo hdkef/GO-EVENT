@@ -64,14 +64,14 @@ func (u *User) Edit(ctx *context.Context, selectq []string, ID *uint32) error {
 }
 
 func (u *User) GetByEmail(ctx *context.Context, email *string) (*layer.User, error) {
-	return u.getOneByField(ctx, *email, "email")
+	return u.getOneUserByField(ctx, *email, "email")
 }
 
 func (u *User) GetByID(ctx *context.Context, ID *uint32) (*layer.User, error) {
-	return u.getOneByField(ctx, *ID, "id")
+	return u.getOneUserByField(ctx, *ID, "id")
 }
 
-func (u *User) getOneByField(ctx *context.Context, value interface{}, what string) (*layer.User, error) {
+func (u *User) getOneUserByField(ctx *context.Context, value interface{}, what string) (*layer.User, error) {
 	err := u.DB.Where(fmt.Sprintf("%s = ?", what), value).First(&u.User).Error
 	if err != nil {
 		return nil, err

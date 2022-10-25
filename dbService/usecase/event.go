@@ -30,7 +30,12 @@ func (e *EventService) Get(ctx context.Context, pagination *layer.Pagination) (*
 }
 
 func (e *EventService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer.Event, error) {
-	return nil, nil
+	//create event repo
+	repo := repository.Event{
+		DB: e.DB,
+	}
+
+	return repo.GetByID(&ctx, &id.ID)
 }
 
 func (e *EventService) Create(ctx context.Context, payload *layer.Event) (*layer.Empty, error) {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"dbservice/layer"
 	"dbservice/model"
+	"fmt"
 	"time"
 
 	"gorm.io/gorm"
@@ -100,8 +101,8 @@ func setEventCreatedAt(u *model.Event) {
 func (u *Event) Create(ctx *context.Context) error {
 	mdl := setEventModel(u)
 	setEventUpdatedAtCreatedAt(&mdl)
-	//set status into 1 = open for reg
-	mdl.Status = uint8(1)
+	// set status into 1 = open for reg
+	mdl.Status = 1
 	return u.DB.Create(&mdl).Error
 }
 
@@ -109,4 +110,16 @@ func (u *Event) Edit(ctx *context.Context, selectq []string, ID *uint32) error {
 	mdl := setEventModel(u)
 	setEventUpdatedAt(&mdl)
 	return u.DB.Model(&model.Event{}).Select(selectq).Where("id = ?", *ID).Updates(&mdl).Error
+}
+
+func (u *Event) GetByID(ctx *context.Context, ID *uint32) (*layer.Event, error) {
+	return u.getOneEventByField(ctx, *ID, "id")
+}
+
+func (u *Event) getOneEventByField(ctx *context.Context, value interface{}, what string) (*layer.Event, error) {
+	err := u.DB.Where(fmt.Sprintf("%s = ?", what), value).First(&u.Event).Error
+	if err != nil {
+		return nil, err
+	}
+	return u.Event, nil
 }
