@@ -45,3 +45,14 @@ func (u *EventRoute) RenderGetByID(c *gin.Context) {
 	//render ok
 	c.JSON(http.StatusOK, data)
 }
+
+func (u *EventRoute) RenderGet(c *gin.Context) {
+	service := usecase.EventService{}
+	data, err := service.Get(c)
+	if err != nil {
+		//render error
+		return
+	}
+	//render ok
+	c.JSON(http.StatusOK, data)
+}

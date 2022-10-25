@@ -17,6 +17,8 @@ func Routes(r *gin.Engine) {
 
 	//Event////////////////////////////////////
 	event := r.Group("/event")
+	//get all event
+	event.GET("", eventRoute.RenderGet)
 	//get created event
 	cbm := event.Group("/createdbyme")
 	cbm.GET("", eventRoute.RenderCreate)

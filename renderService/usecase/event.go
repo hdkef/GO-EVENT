@@ -124,3 +124,23 @@ func (u *EventService) GetByID(c *gin.Context) (*layer.Event, error) {
 	//get event
 	return grpc.Event.GetByID(ctx, &layer.IDPayload{ID: id})
 }
+
+func (u *EventService) Get(c *gin.Context) (*layer.EventList, error) {
+	//get query param last-id
+	lastID, limit, query, err := utils.GetPagination(c)
+	if err != nil {
+		//send error
+
+		return nil, err
+	}
+
+	//get grpc client
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	grpc := GetGRPCClient(c)
+
+	//get
+	return grpc.Event.Get(ctx, &layer.Pagination{
+		LastID: lastID, Limit: limit, Query: query,
+	})
+}

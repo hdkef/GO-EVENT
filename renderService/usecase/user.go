@@ -30,7 +30,7 @@ func (u *UserService) SignIn(c *gin.Context) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
 
-	userFromDB, err := grpc.User.GetByEmail(ctx, &layer.EmailPayload{Email: *user.Email})
+	userFromDB, err := grpc.User.GetByEmail(ctx, &layer.EmailPayload{Email: user.Email})
 	if err != nil {
 		//send error
 
