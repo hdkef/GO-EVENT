@@ -96,8 +96,6 @@ func ValidateEvent(payload *layer.Event, validateType uint8) error {
 		payload.LocationAddress,
 		payload.LocationCity,
 		payload.LocationProvince,
-		payload.StartDate,
-		payload.FinishDate,
 		payload.PresenceQuestion,
 		payload.MediaLink,
 	)
