@@ -13,10 +13,10 @@ type Event struct {
 	Requirement      string    `gorm:"type:varchar(255);not null"`
 	NeedPayment      bool      `gorm:"not null"`
 	NeedID           bool      `gorm:"not null"`
-	PaymentID        uint32
-	CreatorID        uint32 `gorm:"not null"`
-	PaymentPrice     float64
-	EventCategory    uint8     `gorm:"not null"`
+	PaymentID        uint32    `gorm:"default:null"`
+	CreatorID        uint32    `gorm:"not null;default:null"`
+	PaymentPrice     float64   `gorm:"default:null"`
+	EventCategory    uint8     `gorm:"not null;default:null"`
 	IsOffline        bool      `gorm:"not null"`
 	LocationAddress  string    `gorm:"type:varchar(255);"`
 	LocationCity     string    `gorm:"type:varchar(255);"`

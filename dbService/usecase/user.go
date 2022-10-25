@@ -20,7 +20,7 @@ func (e *UserService) GetByEmail(ctx context.Context, payload *layer.EmailPayloa
 	}
 
 	//find user by email
-	return repo.GetByEmail(&ctx, &payload.Email)
+	return repo.GetByEmail(&ctx, payload.Email)
 }
 
 func (e *UserService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer.User, error) {
@@ -29,7 +29,7 @@ func (e *UserService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer.
 		DB: e.DB,
 	}
 
-	return repo.GetByID(&ctx, &id.ID)
+	return repo.GetByID(&ctx, id.ID)
 }
 
 func (e *UserService) Create(ctx context.Context, payload *layer.User) (*layer.Empty, error) {
@@ -56,7 +56,7 @@ func (e *UserService) Edit(ctx context.Context, payload *layer.UserEditPayload) 
 	}
 
 	//edit
-	err := repo.Edit(&ctx, payload.Select, &payload.ID)
+	err := repo.Edit(&ctx, payload.Select, payload.ID)
 	if err != nil {
 		return &layer.Empty{}, err
 	}

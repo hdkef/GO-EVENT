@@ -14,19 +14,12 @@ type EventService struct {
 }
 
 func (e *EventService) Get(ctx context.Context, pagination *layer.Pagination) (*layer.EventList, error) {
-	// nama := "marathon"
-	// desc := "event tahunan marathon di bandung"
-	// needPayment := false
-	// needID := false
-	// isOffline := true
-	// presenceQ := "{`q`:[]}"
-	// status := layer.EventStatus_E_OPEN_FOR_REG
+	//create event repo
+	repo := repository.Event{
+		DB: e.DB,
+	}
 
-	list := []*layer.Event{}
-
-	return &layer.EventList{
-		List: list,
-	}, nil
+	return repo.Get(&ctx, pagination)
 }
 
 func (e *EventService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer.Event, error) {
@@ -35,7 +28,7 @@ func (e *EventService) GetByID(ctx context.Context, id *layer.IDPayload) (*layer
 		DB: e.DB,
 	}
 
-	return repo.GetByID(&ctx, &id.ID)
+	return repo.GetByID(&ctx, id.ID)
 }
 
 func (e *EventService) Create(ctx context.Context, payload *layer.Event) (*layer.Empty, error) {
@@ -64,7 +57,7 @@ func (e *EventService) Edit(ctx context.Context, payload *layer.EventEditPayload
 	}
 
 	//edit
-	err := repo.Edit(&ctx, payload.Select, &payload.ID)
+	err := repo.Edit(&ctx, payload.Select, payload.ID)
 	if err != nil {
 		return &layer.Empty{}, err
 	}

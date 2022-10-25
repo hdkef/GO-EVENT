@@ -112,6 +112,23 @@ func (u *Event) Edit(ctx *context.Context, selectq []string, ID *uint32) error {
 	return u.DB.Model(&model.Event{}).Select(selectq).Where("id = ?", *ID).Updates(&mdl).Error
 }
 
+func (u *Event) Get(ctx *context.Context, pagination *layer.Pagination) (*layer.EventList, error) {
+
+	result := layer.EventList{}
+	if pagination.Query != nil {
+		err := u.DB.Model(&model.Event{}).Where("id > ?", *pagination.LastID).Where(pagination.Query).Limit(int(*pagination.Limit)).Find(&result.List).Error
+		if err != nil {
+			return &layer.EventList{}, err
+		}
+		return &result, nil
+	}
+	err := u.DB.Model(&model.Event{}).Where("id > ?", *pagination.LastID).Limit(int(*pagination.Limit)).Find(&result.List).Error
+	if err != nil {
+		return &layer.EventList{}, err
+	}
+	return &result, nil
+}
+
 func (u *Event) GetByID(ctx *context.Context, ID *uint32) (*layer.Event, error) {
 	return u.getOneEventByField(ctx, *ID, "id")
 }

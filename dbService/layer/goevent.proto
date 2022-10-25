@@ -65,8 +65,8 @@ service LikeLayer{
 
 message Like {
     optional uint32 ID = 1;
-    uint32 user_ID = 2;
-    uint32 event_ID = 3;
+    optional uint32 user_ID = 2;
+    optional uint32 event_ID = 3;
 }
 
 message LikeList{
@@ -74,7 +74,7 @@ message LikeList{
 }
 
 message IDPayload{
-    uint32 ID = 1;
+    optional uint32 ID = 1;
 }
 
 message Empty{
@@ -82,25 +82,25 @@ message Empty{
 }
 
 message EmailPayload{
-    string email = 1;
+    optional string email = 1;
 }
 
 message Pagination{
-    uint32 lastID = 1;
-    uint32 limit = 2;
+    optional uint32 lastID = 1;
+    optional uint32 limit = 2;
     optional string query = 3;
 }
 
 message UserEditPayload{
     repeated string select = 1;
     User user = 2;
-    uint32 ID = 3;
+    optional uint32 ID = 3;
 }
 
 message EventEditPayload{
     repeated string select = 1;
     Event event = 2;
-    uint32 ID = 3;
+    optional uint32 ID = 3;
 }
 
 message Event{
@@ -170,7 +170,7 @@ message Participant{
 }
 
 message TagParticipantPayload{
-    uint32 ID = 1;
+    optional uint32 ID = 1;
     ParticipantStatus status = 2;
 }
 
@@ -201,8 +201,8 @@ message RegisterList{
 
 message Subscription{
     optional uint32 ID = 1;
-    uint32 publisher_ID = 2;
-    uint32 consumer_ID = 3;
+    optional uint32 publisher_ID = 2;
+    optional uint32 consumer_ID = 3;
 }
 
 message SubscriptionList{
@@ -225,7 +225,7 @@ message CertificateList{
 
 message Certificate{
     optional uint32 ID = 1;
-    string file_url = 2;
+    optional string file_url = 2;
 }
 
 message User{
