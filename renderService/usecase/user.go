@@ -12,7 +12,7 @@ import (
 
 type UserService struct{}
 
-func (u *UserService) SignIn(c *gin.Context) error {
+func (u *UserService) SignIn(c *gin.Context) (*uint32, error) {
 	//decode payload
 	var user layer.User
 
@@ -20,7 +20,7 @@ func (u *UserService) SignIn(c *gin.Context) error {
 	if err != nil {
 		//send error
 
-		return err
+		return nil, err
 	}
 
 	//get grpc client
@@ -34,10 +34,17 @@ func (u *UserService) SignIn(c *gin.Context) error {
 	if err != nil {
 		//send error
 
-		return err
+		return nil, err
 	}
 
-	return bcrypt.CompareHashAndPassword([]byte(*userFromDB.Password), []byte(*user.Password))
+	err = bcrypt.CompareHashAndPassword([]byte(*userFromDB.Password), []byte(*user.Password))
+	if err != nil {
+		//send error
+
+		return nil, err
+	}
+
+	return userFromDB.ID, nil
 }
 
 func (u *UserService) SignUp(c *gin.Context) error {
@@ -89,15 +96,7 @@ func (u *UserService) SignUp(c *gin.Context) error {
 	return nil
 }
 
-func (u *UserService) Edit(c *gin.Context) error {
-	//get param id
-	id, err := utils.GetParamID(c)
-	if err != nil {
-		//send error
-
-		return err
-	}
-
+func (u *UserService) Edit(c *gin.Context, userID *uint32) error {
 	//decode payload
 	var user layer.User
 
@@ -134,7 +133,7 @@ func (u *UserService) Edit(c *gin.Context) error {
 	//edit user
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
 	defer cancel()
-	_, err = grpc.User.Edit(ctx, &layer.UserEditPayload{Select: selectQ, User: &user, ID: id})
+	_, err = grpc.User.Edit(ctx, &layer.UserEditPayload{Select: selectQ, User: &user, ID: userID})
 	if err != nil {
 		//send error
 

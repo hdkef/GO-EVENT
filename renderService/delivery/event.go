@@ -10,8 +10,10 @@ import (
 type EventRoute struct{}
 
 func (u *EventRoute) RenderCreate(c *gin.Context) {
+	//get creator ID from token[TODO]
+	id := uint32(1)
 	service := usecase.EventService{}
-	err := service.Create(c)
+	err := service.Create(c, &id)
 	if err != nil {
 		//render error
 		return
@@ -22,6 +24,11 @@ func (u *EventRoute) RenderCreate(c *gin.Context) {
 }
 
 func (u *EventRoute) RenderEdit(c *gin.Context) {
+	//get UserID from token [TODO]
+
+	//get event by id [TODO]
+
+	//compare userID and creatorID[TODO]
 	service := usecase.EventService{}
 	err := service.Edit(c)
 	if err != nil {

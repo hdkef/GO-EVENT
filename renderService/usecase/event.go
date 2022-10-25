@@ -12,7 +12,8 @@ import (
 
 type EventService struct{}
 
-func (u *EventService) Create(c *gin.Context) error {
+func (u *EventService) Create(c *gin.Context, userID *uint32) error {
+
 	//decode payload
 	var event layer.Event
 
