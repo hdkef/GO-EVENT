@@ -60,16 +60,16 @@ func setEventModel(u *Event) model.Event {
 		mdl.LocationProvince = *u.LocationProvince
 	}
 	if u.StartDate != nil {
-		tmp, err := time.Parse(time.UnixDate, *u.StartDate)
+		tmp, err := time.Parse("2006-01-02T15:04:05Z07:00", *u.StartDate)
 		if err != nil {
-			tmp = time.Now()
+			panic(err.Error())
 		}
 		mdl.StartDate = tmp
 	}
 	if u.FinishDate != nil {
-		tmp, err := time.Parse(time.UnixDate, *u.StartDate)
+		tmp, err := time.Parse("2006-01-02T15:04:05Z07:00", *u.FinishDate)
 		if err != nil {
-			tmp = time.Now()
+			panic(err.Error())
 		}
 		mdl.FinishDate = tmp
 	}
