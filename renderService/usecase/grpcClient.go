@@ -14,6 +14,7 @@ type GRPCClient struct {
 	Subscription layer.SubscriptionLayerClient
 	Certificate  layer.CertificateLayerClient
 	Like         layer.LikeLayerClient
+	Register     layer.RegisterLayerClient
 }
 
 func GetGRPCClient(c *gin.Context) GRPCClient {

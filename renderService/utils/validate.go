@@ -45,7 +45,7 @@ func mustNotEmptyBool(name string, value *bool) error {
 
 func ValidateUser(payload *layer.User, validateType uint8) error {
 	//escape string XSS
-	escapeString(payload.Name, payload.Desc, payload.Email, payload.Password)
+	escapeString(payload.Name, payload.Description, payload.Email, payload.Password)
 
 	var err error
 	switch validateType {
@@ -65,7 +65,7 @@ func ValidateUser(payload *layer.User, validateType uint8) error {
 			return err
 		}
 		//desc is a must
-		err = mustNotEmptyString("description", payload.Desc)
+		err = mustNotEmptyString("description", payload.Description)
 		if err != nil {
 			return err
 		}
@@ -90,7 +90,7 @@ func ValidateEvent(payload *layer.Event, validateType uint8) error {
 	//escape string XSS
 	escapeString(
 		payload.Name,
-		payload.Desc,
+		payload.Description,
 		payload.EventImg,
 		payload.Requirement,
 		payload.LocationAddress,
@@ -109,7 +109,7 @@ func ValidateEvent(payload *layer.Event, validateType uint8) error {
 			return err
 		}
 		//desc is a must
-		err = mustNotEmptyString("description", payload.Desc)
+		err = mustNotEmptyString("description", payload.Description)
 		if err != nil {
 			return err
 		}
@@ -166,5 +166,27 @@ func ValidateEvent(payload *layer.Event, validateType uint8) error {
 		return err
 	}
 
+	return err
+}
+
+func ValidateRegister(payload *layer.Register, validateType uint8) error {
+	escapeString(payload.Requirement, payload.IDImg, payload.PaymentImg)
+	var err error
+
+	switch validateType {
+	case VALIDATE_TYPE_CREATE:
+		err = mustNotEmptyString("requirement", payload.Requirement)
+		if err != nil {
+			return err
+		}
+		err = mustNotEmptyUint("event id", payload.Event_ID)
+		if err != nil {
+			return err
+		}
+		err = mustNotEmptyUint("use id", payload.User_ID)
+		if err != nil {
+			return err
+		}
+	}
 	return err
 }

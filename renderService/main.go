@@ -42,6 +42,7 @@ func main() {
 	GRPCClient.Like = layer.NewLikeLayerClient(dbServiceConn)
 	GRPCClient.Subscription = layer.NewSubscriptionLayerClient(dbServiceConn)
 	GRPCClient.Certificate = layer.NewCertificateLayerClient(dbServiceConn)
+	GRPCClient.Register = layer.NewRegisterLayerClient(dbServiceConn)
 
 	r := gin.New()
 

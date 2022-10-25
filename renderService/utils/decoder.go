@@ -23,10 +23,10 @@ func DecodeUser(c *gin.Context, user *layer.User) ([]string, error) {
 		selectQ = append(selectQ, "name")
 	}
 
-	key, exist = form["desc"]
+	key, exist = form["description"]
 	if exist {
-		user.Desc = &key[0]
-		selectQ = append(selectQ, "desc")
+		user.Description = &key[0]
+		selectQ = append(selectQ, "description")
 	}
 
 	key, exist = form["email"]
@@ -60,10 +60,10 @@ func DecodeEvent(c *gin.Context, event *layer.Event) ([]string, error) {
 		selectQ = append(selectQ, "name")
 	}
 
-	key, exist = form["desc"]
+	key, exist = form["description"]
 	if exist {
-		event.Desc = &key[0]
-		selectQ = append(selectQ, "desc")
+		event.Description = &key[0]
+		selectQ = append(selectQ, "description")
 	}
 
 	key, exist = form["event_img"]
@@ -184,6 +184,53 @@ func DecodeEvent(c *gin.Context, event *layer.Event) ([]string, error) {
 	if exist {
 		event.MediaLink = &key[0]
 		selectQ = append(selectQ, "media_link")
+	}
+
+	return selectQ, nil
+}
+
+func DecodeRegister(c *gin.Context, reg *layer.Register) ([]string, error) {
+	//variable to store select query
+	selectQ := []string{}
+	err := c.Request.ParseForm()
+	if err != nil {
+		return nil, err
+	}
+
+	form := c.Request.Form
+
+	key, exist := form["requirement"]
+	if exist {
+		reg.Requirement = &key[0]
+		selectQ = append(selectQ, "requirement")
+	}
+
+	key, exist = form["payment_img"]
+	if exist {
+		reg.PaymentImg = &key[0]
+		selectQ = append(selectQ, "payment_img")
+	}
+
+	key, exist = form["id_img"]
+	if exist {
+		reg.IDImg = &key[0]
+		selectQ = append(selectQ, "id_img")
+	}
+
+	key, exist = form["event_id"]
+	if exist {
+		b, _ := strconv.ParseUint(key[0], 10, 32)
+		c := uint32(b)
+		reg.Event_ID = &c
+		selectQ = append(selectQ, "event_id")
+	}
+
+	key, exist = form["user_id"]
+	if exist {
+		b, _ := strconv.ParseUint(key[0], 10, 32)
+		c := uint32(b)
+		reg.User_ID = &c
+		selectQ = append(selectQ, "user_id")
 	}
 
 	return selectQ, nil

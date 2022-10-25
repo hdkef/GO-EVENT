@@ -145,7 +145,7 @@ func (u *UserService) Edit(c *gin.Context, userID *uint32) error {
 
 func (u *UserService) GetByID(c *gin.Context) (*layer.User, error) {
 	//get param id
-	id, err := utils.GetParamID(c)
+	id, err := utils.GetParamUserID(c)
 	if err != nil {
 		//send error
 

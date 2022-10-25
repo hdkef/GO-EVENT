@@ -67,7 +67,7 @@ func (u *EventService) Create(c *gin.Context, userID *uint32) error {
 
 func (u *EventService) Edit(c *gin.Context) error {
 	//get param id
-	id, err := utils.GetParamID(c)
+	id, err := utils.GetParamEventID(c)
 	if err != nil {
 		//send error
 
@@ -110,7 +110,7 @@ func (u *EventService) Edit(c *gin.Context) error {
 
 func (u *EventService) GetByID(c *gin.Context) (*layer.Event, error) {
 	//get param id
-	id, err := utils.GetParamID(c)
+	id, err := utils.GetParamEventID(c)
 	if err != nil {
 		//send error
 

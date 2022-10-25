@@ -8,6 +8,7 @@ func Routes(r *gin.Engine) {
 
 	userRoute := UserRoute{}
 	eventRoute := EventRoute{}
+	regRoute := RegisterRoute{}
 
 	//Render Routes
 	//home
@@ -26,7 +27,7 @@ func Routes(r *gin.Engine) {
 	user.GET("/signin", userRoute.RenderSignIn)
 	user.POST("/signin", userRoute.RenderSignIn)
 	//view user detail by id (visible public)
-	user.GET("/:id", userRoute.RenderGetByID)
+	user.GET("/:user-id", userRoute.RenderGetByID)
 	//edit user (visible publisher/consumer)
 	user.GET("/edit", userRoute.RenderEdit)
 	user.PATCH("/edit", userRoute.RenderEdit)
@@ -38,8 +39,19 @@ func Routes(r *gin.Engine) {
 	event.GET("/new", eventRoute.RenderCreate)
 	event.POST("/new", eventRoute.RenderCreate)
 	//edit event by id (visible publisher)
-	event.GET("/edit/:id", eventRoute.RenderEdit)
-	event.PATCH("/edit/:id", eventRoute.RenderEdit)
+	event.GET("/edit/:event-id", eventRoute.RenderEdit)
+	event.PATCH("/edit/:event-id", eventRoute.RenderEdit)
 	//view event detail by id (visible public)
-	event.GET("/:id", eventRoute.RenderGetByID)
+	event.GET("/:event-id", eventRoute.RenderGetByID)
+
+	//REGISTER
+	register := event.Group("/register")
+	//view register by event-id (visible publisher)
+	register.GET("/event-id/:event-id", regRoute.RenderGetByEventID)
+	//create register (visible consumer)
+	register.GET("/new/:event-id", regRoute.RenderCreate)
+	register.POST("/new/:event-id", regRoute.RenderCreate)
+	//view register (visible publisher)
+	register.GET("/:register-id", regRoute.RenderGetByID)
+
 }
