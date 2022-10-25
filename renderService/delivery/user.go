@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	"fmt"
 	"net/http"
 	"renderService/usecase"
 
@@ -31,7 +30,7 @@ func (u *UserRoute) RenderSignUp(c *gin.Context) {
 	err := service.SignUp(c)
 	if err != nil {
 		//render error
-		fmt.Println(err)
+
 		return
 	}
 	//render ok
@@ -55,7 +54,7 @@ func (u *UserRoute) RenderGetByID(c *gin.Context) {
 	data, err := service.GetByID(c)
 	if err != nil {
 		//render error
-		fmt.Println(err)
+
 		return
 	}
 	//render ok

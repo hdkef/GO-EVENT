@@ -106,3 +106,21 @@ func (u *EventService) Edit(c *gin.Context) error {
 	}
 	return nil
 }
+
+func (u *EventService) GetByID(c *gin.Context) (*layer.Event, error) {
+	//get param id
+	id, err := utils.GetParamID(c)
+	if err != nil {
+		//send error
+
+		return nil, err
+	}
+
+	//get grpc client
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	grpc := GetGRPCClient(c)
+
+	//get event
+	return grpc.Event.GetByID(ctx, &layer.IDPayload{ID: id})
+}

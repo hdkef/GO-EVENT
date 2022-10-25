@@ -1,7 +1,6 @@
 package delivery
 
 import (
-	"fmt"
 	"net/http"
 	"renderService/usecase"
 
@@ -10,7 +9,7 @@ import (
 
 type EventRoute struct{}
 
-func (u *EventRoute) Create(c *gin.Context) {
+func (u *EventRoute) RenderCreate(c *gin.Context) {
 	service := usecase.EventService{}
 	err := service.Create(c)
 	if err != nil {
@@ -22,15 +21,27 @@ func (u *EventRoute) Create(c *gin.Context) {
 	c.JSON(http.StatusOK, "ok")
 }
 
-func (u *EventRoute) Edit(c *gin.Context) {
+func (u *EventRoute) RenderEdit(c *gin.Context) {
 	service := usecase.EventService{}
 	err := service.Edit(c)
 	if err != nil {
 		//render error
-		fmt.Println(err)
+
 		return
 	}
 
 	//render ok
 	c.JSON(http.StatusOK, "ok")
+}
+
+func (u *EventRoute) RenderGetByID(c *gin.Context) {
+	service := usecase.EventService{}
+	data, err := service.GetByID(c)
+	if err != nil {
+		//render error
+
+		return
+	}
+	//render ok
+	c.JSON(http.StatusOK, data)
 }
