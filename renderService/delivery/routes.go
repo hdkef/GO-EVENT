@@ -44,6 +44,8 @@ func Routes(r *gin.Engine) {
 	event.PATCH("/edit/:event-id", eventRoute.RenderEdit)
 	//view event detail by id (visible public)
 	event.GET("/:event-id", eventRoute.RenderGetByID)
+	//AJAX (visible publisher)
+	event.DELETE("/:event-id", eventRoute.AjaxDelete)
 
 	//REGISTER
 	register := event.Group("/register")
@@ -59,7 +61,7 @@ func Routes(r *gin.Engine) {
 	subs := r.Group("/subscription")
 	//get subscription by userID (visible consumer)
 	subs.GET("", subsRoute.GetByConsumerID)
-	//AJAX
+	//AJAX (visible consumer)
 	subs.POST("/:publisher-id", subsRoute.AjaxSubs)
 	subs.DELETE("/:subscription-id", subsRoute.AjaxUnSubs)
 }

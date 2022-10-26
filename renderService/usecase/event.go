@@ -12,6 +12,32 @@ import (
 
 type EventService struct{}
 
+func (u *EventService) Delete(c *gin.Context) error {
+	//get param event id
+	eventID, err := utils.GetParamEventID(c)
+	if err != nil {
+		//send error
+
+		return err
+	}
+
+	//get grpc client
+	grpc := GetGRPCClient(c)
+
+	//sign up
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+
+	_, err = grpc.Event.Delete(ctx, &layer.IDPayload{ID: eventID})
+	if err != nil {
+		//send error
+
+		return err
+	}
+	return nil
+
+}
+
 func (u *EventService) Create(c *gin.Context, userID *uint32) error {
 
 	//decode payload
@@ -66,7 +92,7 @@ func (u *EventService) Create(c *gin.Context, userID *uint32) error {
 }
 
 func (u *EventService) Edit(c *gin.Context) error {
-	//get param id
+	//get param event id
 	id, err := utils.GetParamEventID(c)
 	if err != nil {
 		//send error
@@ -109,7 +135,7 @@ func (u *EventService) Edit(c *gin.Context) error {
 }
 
 func (u *EventService) GetByID(c *gin.Context) (*layer.Event, error) {
-	//get param id
+	//get param event id
 	id, err := utils.GetParamEventID(c)
 	if err != nil {
 		//send error
