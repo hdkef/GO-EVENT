@@ -58,6 +58,7 @@ func AutoMigrate(db *gorm.DB) error {
 		model.Event{},
 		model.Register{},
 		model.Subscription{},
+		model.Like{},
 	)
 }
 
