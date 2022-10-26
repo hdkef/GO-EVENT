@@ -18,6 +18,10 @@ func getID(c *gin.Context, what string) (*uint32, error) {
 	return &idConverted, nil
 }
 
+func GetParamLikeID(c *gin.Context) (*uint32, error) {
+	return getID(c, "like-id")
+}
+
 func GetParamSubscriptionID(c *gin.Context) (*uint32, error) {
 	return getID(c, "subscription-id")
 }

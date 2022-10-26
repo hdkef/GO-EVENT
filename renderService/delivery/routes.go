@@ -10,6 +10,7 @@ func Routes(r *gin.Engine) {
 	eventRoute := EventRoute{}
 	regRoute := RegisterRoute{}
 	subsRoute := SubscriptionRoute{}
+	likeRoute := LikeRoute{}
 
 	//Render Routes
 	//home
@@ -46,6 +47,14 @@ func Routes(r *gin.Engine) {
 	event.GET("/:event-id", eventRoute.RenderGetByID)
 	//AJAX (visible publisher)
 	event.DELETE("/:event-id", eventRoute.AjaxDelete)
+	//AJAX (visible consumer)
+	event.GET("/like/user-id/:user-id", likeRoute.RenderGetByUserID)
+	//AJAX (visible consumer)
+	event.GET("/like/event-id/:event-id", likeRoute.RenderGetByEventID)
+	//AJAX (visible consumer)
+	event.POST("/like/:event-id", likeRoute.AjaxCreate)
+	//AJAX (visible consumer)
+	event.DELETE("/like/:like-id", likeRoute.AjaxDelete)
 
 	//REGISTER
 	register := event.Group("/register")
@@ -64,4 +73,5 @@ func Routes(r *gin.Engine) {
 	//AJAX (visible consumer)
 	subs.POST("/:publisher-id", subsRoute.AjaxSubs)
 	subs.DELETE("/:subscription-id", subsRoute.AjaxUnSubs)
+
 }

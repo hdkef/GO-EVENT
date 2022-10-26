@@ -1311,6 +1311,7 @@ type LikeLayerClient interface {
 	Get(ctx context.Context, in *Pagination, opts ...grpc.CallOption) (*LikeList, error)
 	Create(ctx context.Context, in *Like, opts ...grpc.CallOption) (*Empty, error)
 	Delete(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Empty, error)
+	GetByID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Like, error)
 }
 
 type likeLayerClient struct {
@@ -1348,6 +1349,15 @@ func (c *likeLayerClient) Delete(ctx context.Context, in *IDPayload, opts ...grp
 	return out, nil
 }
 
+func (c *likeLayerClient) GetByID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Like, error) {
+	out := new(Like)
+	err := c.cc.Invoke(ctx, "/layer.LikeLayer/GetByID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // LikeLayerServer is the server API for LikeLayer service.
 // All implementations must embed UnimplementedLikeLayerServer
 // for forward compatibility
@@ -1355,6 +1365,7 @@ type LikeLayerServer interface {
 	Get(context.Context, *Pagination) (*LikeList, error)
 	Create(context.Context, *Like) (*Empty, error)
 	Delete(context.Context, *IDPayload) (*Empty, error)
+	GetByID(context.Context, *IDPayload) (*Like, error)
 	mustEmbedUnimplementedLikeLayerServer()
 }
 
@@ -1370,6 +1381,9 @@ func (UnimplementedLikeLayerServer) Create(context.Context, *Like) (*Empty, erro
 }
 func (UnimplementedLikeLayerServer) Delete(context.Context, *IDPayload) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedLikeLayerServer) GetByID(context.Context, *IDPayload) (*Like, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
 }
 func (UnimplementedLikeLayerServer) mustEmbedUnimplementedLikeLayerServer() {}
 
@@ -1438,6 +1452,24 @@ func _LikeLayer_Delete_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _LikeLayer_GetByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDPayload)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LikeLayerServer).GetByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/layer.LikeLayer/GetByID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LikeLayerServer).GetByID(ctx, req.(*IDPayload))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // LikeLayer_ServiceDesc is the grpc.ServiceDesc for LikeLayer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1456,6 +1488,10 @@ var LikeLayer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _LikeLayer_Delete_Handler,
+		},
+		{
+			MethodName: "GetByID",
+			Handler:    _LikeLayer_GetByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -2155,7 +2155,7 @@ var file_layer_goevent_proto_rawDesc = []byte{
 	0x65, 0x72, 0x1a, 0x0c, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79,
 	0x12, 0x2c, 0x0a, 0x04, 0x45, 0x64, 0x69, 0x74, 0x12, 0x16, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72,
 	0x2e, 0x55, 0x73, 0x65, 0x72, 0x45, 0x64, 0x69, 0x74, 0x50, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64,
-	0x1a, 0x0c, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x32, 0x85,
+	0x1a, 0x0c, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x32, 0xaf,
 	0x01, 0x0a, 0x09, 0x4c, 0x69, 0x6b, 0x65, 0x4c, 0x61, 0x79, 0x65, 0x72, 0x12, 0x29, 0x0a, 0x03,
 	0x47, 0x65, 0x74, 0x12, 0x11, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x50, 0x61, 0x67, 0x69,
 	0x6e, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x1a, 0x0f, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x4c,
@@ -2164,9 +2164,11 @@ var file_layer_goevent_proto_rawDesc = []byte{
 	0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x28, 0x0a, 0x06,
 	0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x12, 0x10, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x49,
 	0x44, 0x50, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x1a, 0x0c, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72,
-	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x42, 0x15, 0x5a, 0x13, 0x72, 0x65, 0x6e, 0x64, 0x65, 0x72,
-	0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x2f, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x62, 0x06, 0x70,
-	0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x28, 0x0a, 0x07, 0x47, 0x65, 0x74, 0x42, 0x79, 0x49,
+	0x44, 0x12, 0x10, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x49, 0x44, 0x50, 0x61, 0x79, 0x6c,
+	0x6f, 0x61, 0x64, 0x1a, 0x0b, 0x2e, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x2e, 0x4c, 0x69, 0x6b, 0x65,
+	0x42, 0x15, 0x5a, 0x13, 0x72, 0x65, 0x6e, 0x64, 0x65, 0x72, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x2f, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -2255,37 +2257,39 @@ var file_layer_goevent_proto_depIdxs = []int32{
 	8,  // 40: layer.LikeLayer.Get:input_type -> layer.Pagination
 	3,  // 41: layer.LikeLayer.Create:input_type -> layer.Like
 	5,  // 42: layer.LikeLayer.Delete:input_type -> layer.IDPayload
-	12, // 43: layer.EventLayer.Get:output_type -> layer.EventList
-	11, // 44: layer.EventLayer.GetByID:output_type -> layer.Event
-	6,  // 45: layer.EventLayer.Edit:output_type -> layer.Empty
-	6,  // 46: layer.EventLayer.Create:output_type -> layer.Empty
-	6,  // 47: layer.EventLayer.Delete:output_type -> layer.Empty
-	15, // 48: layer.ParticipantLayer.Get:output_type -> layer.ParticipantList
-	6,  // 49: layer.ParticipantLayer.TagByID:output_type -> layer.Empty
-	6,  // 50: layer.ParticipantLayer.Delete:output_type -> layer.Empty
-	6,  // 51: layer.RegisterLayer.Create:output_type -> layer.Empty
-	16, // 52: layer.RegisterLayer.GetByID:output_type -> layer.Register
-	6,  // 53: layer.RegisterLayer.Delete:output_type -> layer.Empty
-	17, // 54: layer.RegisterLayer.Get:output_type -> layer.RegisterList
-	6,  // 55: layer.SubscriptionLayer.Create:output_type -> layer.Empty
-	19, // 56: layer.SubscriptionLayer.Get:output_type -> layer.SubscriptionList
-	6,  // 57: layer.SubscriptionLayer.Delete:output_type -> layer.Empty
-	18, // 58: layer.SubscriptionLayer.GetByID:output_type -> layer.Subscription
-	20, // 59: layer.PaymentLayer.GetByID:output_type -> layer.Payment
-	21, // 60: layer.PaymentLayer.GetByUserID:output_type -> layer.PaymentList
-	6,  // 61: layer.PaymentLayer.Create:output_type -> layer.Empty
-	6,  // 62: layer.PaymentLayer.Delete:output_type -> layer.Empty
-	6,  // 63: layer.CertificateLayer.Create:output_type -> layer.Empty
-	22, // 64: layer.CertificateLayer.Get:output_type -> layer.CertificateList
-	24, // 65: layer.UserLayer.GetByEmail:output_type -> layer.User
-	24, // 66: layer.UserLayer.GetByID:output_type -> layer.User
-	6,  // 67: layer.UserLayer.Create:output_type -> layer.Empty
-	6,  // 68: layer.UserLayer.Edit:output_type -> layer.Empty
-	4,  // 69: layer.LikeLayer.Get:output_type -> layer.LikeList
-	6,  // 70: layer.LikeLayer.Create:output_type -> layer.Empty
-	6,  // 71: layer.LikeLayer.Delete:output_type -> layer.Empty
-	43, // [43:72] is the sub-list for method output_type
-	14, // [14:43] is the sub-list for method input_type
+	5,  // 43: layer.LikeLayer.GetByID:input_type -> layer.IDPayload
+	12, // 44: layer.EventLayer.Get:output_type -> layer.EventList
+	11, // 45: layer.EventLayer.GetByID:output_type -> layer.Event
+	6,  // 46: layer.EventLayer.Edit:output_type -> layer.Empty
+	6,  // 47: layer.EventLayer.Create:output_type -> layer.Empty
+	6,  // 48: layer.EventLayer.Delete:output_type -> layer.Empty
+	15, // 49: layer.ParticipantLayer.Get:output_type -> layer.ParticipantList
+	6,  // 50: layer.ParticipantLayer.TagByID:output_type -> layer.Empty
+	6,  // 51: layer.ParticipantLayer.Delete:output_type -> layer.Empty
+	6,  // 52: layer.RegisterLayer.Create:output_type -> layer.Empty
+	16, // 53: layer.RegisterLayer.GetByID:output_type -> layer.Register
+	6,  // 54: layer.RegisterLayer.Delete:output_type -> layer.Empty
+	17, // 55: layer.RegisterLayer.Get:output_type -> layer.RegisterList
+	6,  // 56: layer.SubscriptionLayer.Create:output_type -> layer.Empty
+	19, // 57: layer.SubscriptionLayer.Get:output_type -> layer.SubscriptionList
+	6,  // 58: layer.SubscriptionLayer.Delete:output_type -> layer.Empty
+	18, // 59: layer.SubscriptionLayer.GetByID:output_type -> layer.Subscription
+	20, // 60: layer.PaymentLayer.GetByID:output_type -> layer.Payment
+	21, // 61: layer.PaymentLayer.GetByUserID:output_type -> layer.PaymentList
+	6,  // 62: layer.PaymentLayer.Create:output_type -> layer.Empty
+	6,  // 63: layer.PaymentLayer.Delete:output_type -> layer.Empty
+	6,  // 64: layer.CertificateLayer.Create:output_type -> layer.Empty
+	22, // 65: layer.CertificateLayer.Get:output_type -> layer.CertificateList
+	24, // 66: layer.UserLayer.GetByEmail:output_type -> layer.User
+	24, // 67: layer.UserLayer.GetByID:output_type -> layer.User
+	6,  // 68: layer.UserLayer.Create:output_type -> layer.Empty
+	6,  // 69: layer.UserLayer.Edit:output_type -> layer.Empty
+	4,  // 70: layer.LikeLayer.Get:output_type -> layer.LikeList
+	6,  // 71: layer.LikeLayer.Create:output_type -> layer.Empty
+	6,  // 72: layer.LikeLayer.Delete:output_type -> layer.Empty
+	3,  // 73: layer.LikeLayer.GetByID:output_type -> layer.Like
+	44, // [44:74] is the sub-list for method output_type
+	14, // [14:44] is the sub-list for method input_type
 	14, // [14:14] is the sub-list for extension type_name
 	14, // [14:14] is the sub-list for extension extendee
 	0,  // [0:14] is the sub-list for field type_name

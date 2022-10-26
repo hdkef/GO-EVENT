@@ -63,6 +63,7 @@ service LikeLayer{
     rpc Get(Pagination) returns (LikeList); //melihat like, diperlukan oleh broadcastService, consumer dan publisher
     rpc Create(Like) returns (Empty); //membuat like, diperlukan oleh consumer
     rpc Delete(IDPayload) returns (Empty); //menghapus like, diperlukan oleh consumer
+    rpc GetByID(IDPayload) returns (Like); //mendapat 1 like, diperlukan untuk auth
 }
 
 message Like {
