@@ -146,3 +146,7 @@ func (u *Event) getOneEventByField(ctx *context.Context, value interface{}, what
 	}
 	return u.Event, nil
 }
+
+func (u *Event) Delete(ctx *context.Context, id *uint32) error {
+	return u.DB.Delete(&model.Event{}, *id).Error
+}
