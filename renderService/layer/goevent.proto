@@ -33,6 +33,7 @@ service SubscriptionLayer {
     rpc Create(Subscription) returns (Empty); //membuat subscription untuk publisher (user yang menciptakan event)
     rpc Get(Pagination) returns (SubscriptionList); //melihat subscription, diperlukan oleh broadcastService dan user
     rpc Delete(IDPayload) returns (Empty); //menghapus subscription, diperlukan oleh consumer (user yang subscribe publisher)
+    rpc GetByID(IDPayload) returns (Subscription); //mendapatkan subscription by id, diperlukan untuk auth
 }
 
 //Payment

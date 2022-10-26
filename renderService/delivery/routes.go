@@ -9,6 +9,7 @@ func Routes(r *gin.Engine) {
 	userRoute := UserRoute{}
 	eventRoute := EventRoute{}
 	regRoute := RegisterRoute{}
+	subsRoute := SubscriptionRoute{}
 
 	//Render Routes
 	//home
@@ -54,4 +55,11 @@ func Routes(r *gin.Engine) {
 	//view register (visible publisher)
 	register.GET("/:register-id", regRoute.RenderGetByID)
 
+	//SUBSCRIPTION
+	subs := r.Group("/subscription")
+	//get subscription by userID (visible consumer)
+	subs.GET("", subsRoute.GetByConsumerID)
+	//AJAX
+	subs.POST("/:publisher-id", subsRoute.AjaxSubs)
+	subs.DELETE("/:subscription-id", subsRoute.AjaxUnSubs)
 }

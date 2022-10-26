@@ -607,6 +607,7 @@ type SubscriptionLayerClient interface {
 	Create(ctx context.Context, in *Subscription, opts ...grpc.CallOption) (*Empty, error)
 	Get(ctx context.Context, in *Pagination, opts ...grpc.CallOption) (*SubscriptionList, error)
 	Delete(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Empty, error)
+	GetByID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Subscription, error)
 }
 
 type subscriptionLayerClient struct {
@@ -644,6 +645,15 @@ func (c *subscriptionLayerClient) Delete(ctx context.Context, in *IDPayload, opt
 	return out, nil
 }
 
+func (c *subscriptionLayerClient) GetByID(ctx context.Context, in *IDPayload, opts ...grpc.CallOption) (*Subscription, error) {
+	out := new(Subscription)
+	err := c.cc.Invoke(ctx, "/layer.SubscriptionLayer/GetByID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // SubscriptionLayerServer is the server API for SubscriptionLayer service.
 // All implementations must embed UnimplementedSubscriptionLayerServer
 // for forward compatibility
@@ -651,6 +661,7 @@ type SubscriptionLayerServer interface {
 	Create(context.Context, *Subscription) (*Empty, error)
 	Get(context.Context, *Pagination) (*SubscriptionList, error)
 	Delete(context.Context, *IDPayload) (*Empty, error)
+	GetByID(context.Context, *IDPayload) (*Subscription, error)
 	mustEmbedUnimplementedSubscriptionLayerServer()
 }
 
@@ -666,6 +677,9 @@ func (UnimplementedSubscriptionLayerServer) Get(context.Context, *Pagination) (*
 }
 func (UnimplementedSubscriptionLayerServer) Delete(context.Context, *IDPayload) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
+}
+func (UnimplementedSubscriptionLayerServer) GetByID(context.Context, *IDPayload) (*Subscription, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetByID not implemented")
 }
 func (UnimplementedSubscriptionLayerServer) mustEmbedUnimplementedSubscriptionLayerServer() {}
 
@@ -734,6 +748,24 @@ func _SubscriptionLayer_Delete_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SubscriptionLayer_GetByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(IDPayload)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SubscriptionLayerServer).GetByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/layer.SubscriptionLayer/GetByID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SubscriptionLayerServer).GetByID(ctx, req.(*IDPayload))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // SubscriptionLayer_ServiceDesc is the grpc.ServiceDesc for SubscriptionLayer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -752,6 +784,10 @@ var SubscriptionLayer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Delete",
 			Handler:    _SubscriptionLayer_Delete_Handler,
+		},
+		{
+			MethodName: "GetByID",
+			Handler:    _SubscriptionLayer_GetByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

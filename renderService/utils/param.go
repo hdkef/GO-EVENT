@@ -18,6 +18,14 @@ func getID(c *gin.Context, what string) (*uint32, error) {
 	return &idConverted, nil
 }
 
+func GetParamSubscriptionID(c *gin.Context) (*uint32, error) {
+	return getID(c, "subscription-id")
+}
+
+func GetParamPublisherID(c *gin.Context) (*uint32, error) {
+	return getID(c, "publisher-id")
+}
+
 func GetParamRegisterID(c *gin.Context) (*uint32, error) {
 	return getID(c, "register-id")
 }
