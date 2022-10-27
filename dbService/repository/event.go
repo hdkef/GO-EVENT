@@ -38,8 +38,8 @@ func setEventModel(u *Event) (model.Event, error) {
 	if u.Payment_ID != nil {
 		mdl.PaymentID = *u.Payment_ID
 	}
-	if u.Creator_ID != nil {
-		mdl.CreatorID = *u.Creator_ID
+	if u.Publisher_ID != nil {
+		mdl.PublisherID = *u.Publisher_ID
 	}
 	if u.PaymentPrice != nil {
 		mdl.PaymentPrice = *u.PaymentPrice

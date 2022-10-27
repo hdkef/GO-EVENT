@@ -14,7 +14,7 @@ type Event struct {
 	NeedPayment      bool      `gorm:"not null"`
 	NeedID           bool      `gorm:"not null"`
 	PaymentID        uint32    `gorm:"default:null"`
-	CreatorID        uint32    `gorm:"not null;default:null"`
+	PublisherID      uint32    `gorm:"not null;default:null"`
 	PaymentPrice     float64   `gorm:"default:null"`
 	EventCategory    uint8     `gorm:"not null;default:null"`
 	IsOffline        bool      `gorm:"not null"`
@@ -26,5 +26,5 @@ type Event struct {
 	Status           uint8     `gorm:"not null"`
 	PresenceQuestion string    `gorm:"not null"`
 	MediaLink        string    `gorm:"not null"`
-	Creator          User      `gorm:"foreignKey:CreatorID;constraint:OnDelete:CASCADE;"`
+	Creator          User      `gorm:"foreignKey:PublisherID;constraint:OnDelete:CASCADE;"`
 }
