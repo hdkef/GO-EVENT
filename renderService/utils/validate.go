@@ -133,8 +133,8 @@ func ValidateEvent(payload *layer.Event, validateType uint8) error {
 		if err != nil {
 			return err
 		}
-		//creator id is a must
-		err = mustNotEmptyUint("creator id", payload.Creator_ID)
+		//publisher id is a must
+		err = mustNotEmptyUint("publisher id", payload.Publisher_ID)
 		if err != nil {
 			return err
 		}
@@ -189,4 +189,24 @@ func ValidateRegister(payload *layer.Register, validateType uint8) error {
 		}
 	}
 	return err
+}
+
+func ValidateCertificate(payload *layer.Certificate, validateType uint8) error {
+	var err error
+	switch validateType {
+	case VALIDATE_TYPE_CREATE:
+		err = mustNotEmptyUint("user id", payload.User_ID)
+		if err != nil {
+			return err
+		}
+		err = mustNotEmptyUint("event id", payload.Event_ID)
+		if err != nil {
+			return err
+		}
+		err = mustNotEmptyString("file url", payload.FileUrl)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

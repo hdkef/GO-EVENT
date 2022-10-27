@@ -28,6 +28,7 @@ func (u *LikeRoute) RenderGetByUserID(c *gin.Context) {
 
 	id := uint32(3)
 	service := usecase.LikeService{}
+	//compare like.UserID == UserID [TODO]
 	data, err := service.GetByUserID(c, &id)
 	if err != nil {
 		//render error

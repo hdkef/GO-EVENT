@@ -116,7 +116,7 @@ message Event{
     optional bool need_payment = 7;
     optional bool need_ID = 8;
     optional uint32 payment_ID = 9;
-    optional uint32 creator_ID = 10;
+    optional uint32 publisher_ID = 10;
     optional double payment_price = 11;
     optional EventCategory event_category = 12;
     optional bool is_offline = 13;

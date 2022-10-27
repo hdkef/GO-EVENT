@@ -106,12 +106,12 @@ func DecodeEvent(c *gin.Context, event *layer.Event) ([]string, error) {
 		selectQ = append(selectQ, "payment_id")
 	}
 
-	key, exist = form["creator_id"]
+	key, exist = form["publisher_id"]
 	if exist {
 		b, _ := strconv.ParseUint(key[0], 10, 32)
 		c := uint32(b)
-		event.Creator_ID = &c
-		selectQ = append(selectQ, "creator_id")
+		event.Publisher_ID = &c
+		selectQ = append(selectQ, "publisher_id")
 	}
 
 	key, exist = form["payment_price"]
@@ -233,5 +233,25 @@ func DecodeRegister(c *gin.Context, reg *layer.Register) ([]string, error) {
 		selectQ = append(selectQ, "user_id")
 	}
 
+	return selectQ, nil
+}
+
+func DecodeCertificate(c *gin.Context, reg *layer.Certificate) ([]string, error) {
+	//variable to store select query
+	selectQ := []string{}
+	err := c.Request.ParseForm()
+	if err != nil {
+		return nil, err
+	}
+
+	form := c.Request.Form
+
+	key, exist := form["user_id"]
+	if exist {
+		b, _ := strconv.ParseUint(key[0], 10, 32)
+		c := uint32(b)
+		reg.User_ID = &c
+		selectQ = append(selectQ, "user_id")
+	}
 	return selectQ, nil
 }

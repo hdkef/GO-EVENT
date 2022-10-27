@@ -11,7 +11,7 @@ import (
 type EventRoute struct{}
 
 func (u *EventRoute) RenderCreate(c *gin.Context) {
-	//get creator ID from token[TODO]
+	//get user ID //publisher ID from token[TODO]
 	id := uint32(1)
 	service := usecase.EventService{}
 	err := service.Create(c, &id)
@@ -30,7 +30,7 @@ func (u *EventRoute) RenderEdit(c *gin.Context) {
 
 	//get event by id [TODO]
 
-	//compare userID and creatorID[TODO]
+	//compare userID and publisherID[TODO]
 	service := usecase.EventService{}
 	err := service.Edit(c)
 	if err != nil {
@@ -71,7 +71,7 @@ func (u *EventRoute) AjaxDelete(c *gin.Context) {
 
 	//get eventbyID [TODO]
 
-	//compare creator_id = user ID [TODO]
+	//compare publisher_id = user ID [TODO]
 	service := usecase.EventService{}
 	err := service.Delete(c)
 	if err != nil {

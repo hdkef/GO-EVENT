@@ -46,7 +46,7 @@ func (u *RegisterRoute) RenderGetByEventID(c *gin.Context) {
 
 	//get event by id[TODO]
 
-	//compare if event.creator id = user ID[TODO]
+	//compare if event.publisher id = user ID[TODO]
 
 	service := usecase.RegisterService{}
 	data, err := service.Get(c)
